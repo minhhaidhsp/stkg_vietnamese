@@ -1,0 +1,101 @@
+================================================================================
+STKG VIETNAMESE - GHI CHÚ DỰ ÁN
+================================================================================
+
+[TÀI KHOẢN & API KEYS]
+--------------------------------------------------------------------------------
+GeoNames API
+  - Đăng ký miễn phí: https://www.geonames.org/login
+  - Sau khi đăng ký, vào: https://www.geonames.org/manageaccount
+    → Bật "Free Web Services" (mặc định tắt)
+  - Điền username vào config.py:
+      GEONAMES_USERNAME = "your_username_here"
+  - Giới hạn: 1000 requests/giờ, 30000 requests/ngày (free)
+
+--------------------------------------------------------------------------------
+Wikidata SPARQL
+  - Không cần tài khoản
+  - Endpoint: https://query.wikidata.org/sparql
+  - Giới hạn: 1 request mỗi vài giây, timeout 60s
+  - Nếu bị rate-limit, tăng REQUEST_DELAY trong config.py
+
+--------------------------------------------------------------------------------
+OpenStreetMap Nominatim
+  - Không cần tài khoản
+  - Giới hạn: 1 request/giây (quan trọng: không vượt quá)
+  - LƯU Ý: Server environment (cloud/VPS) có thể bị block 403
+    → Chạy từ máy local để tránh bị chặn
+  - Nếu vẫn bị 403: dùng GeoNames thay thế
+
+================================================================================
+[LƯU Ý KỸ THUẬT]
+--------------------------------------------------------------------------------
+Encoding trên Windows
+  - Terminal Windows dùng cp1252, KHÔNG hỗ trợ tiếng Việt
+  - Tất cả script cần thêm ở đầu main block:
+      import sys; sys.stdout.reconfigure(encoding="utf-8")
+  - Tránh dùng ký tự đặc biệt trong print() của __main__
+
+Python environment
+  - Máy có 2 Python: Python 3.12 (pip) và Python 3.14 (python)
+  - Luôn cài packages bằng:  python -m pip install ...
+  - KHÔNG dùng pip install ... (sẽ cài vào Python 3.12, không dùng được)
+
+SPARQL Wikidata
+  - Blazegraph KHÔNG hỗ trợ string literal trong SELECT:
+      SAI:  SELECT "locatedIn" AS ?r ...
+      ĐÚNG: BIND("locatedIn" AS ?r) trong WHERE
+  - BIND phải đặt SAU các triple pattern, không đặt trước UNION
+
+--------------------------------------------------------------------------------
+HuggingFace Models (tự tải lần đầu, cache tại %USERPROFILE%\.cache\huggingface)
+  - ViT:  google/vit-base-patch16-224  (~330 MB)  — trích xuất CLS embedding 768-dim
+  - CLIP: openai/clip-vit-base-patch32 (~600 MB)  — image-text similarity
+  - Cần internet lần đầu; sau đó dùng cache offline
+  - CPU-only trên máy này (CUDA: False) → mỗi ảnh ~1-3 giây
+
+================================================================================
+[LƯU Ý KỸ THUẬT]
+--------------------------------------------------------------------------------
+Encoding trên Windows
+  - Terminal Windows dùng cp1252, KHÔNG hỗ trợ tiếng Việt
+  - Tất cả script cần thêm ở đầu main block:
+      import sys; sys.stdout.reconfigure(encoding="utf-8")
+  - Tránh dùng ký tự đặc biệt trong print() của __main__
+
+Python environment
+  - Máy có 2 Python: Python 3.12 (pip) và Python 3.14 (python)
+  - Luôn cài packages bằng:  python -m pip install ...
+  - KHÔNG dùng pip install ... (sẽ cài vào Python 3.12, không dùng được)
+
+SPARQL Wikidata
+  - Blazegraph KHÔNG hỗ trợ string literal trong SELECT:
+      SAI:  SELECT "locatedIn" AS ?r ...
+      ĐÚNG: BIND("locatedIn" AS ?r) trong WHERE
+  - BIND phải đặt SAU các triple pattern, không đặt trước UNION
+
+OSM Nominatim
+  - Server/VPS bị block 403 bởi Nominatim
+  - Chạy geocoding từ máy local để tránh bị chặn
+
+Wikimedia image download
+  - KHÔNG dùng requests.Session() cho download ảnh — sau 240+ API calls,
+    session bị Wikimedia rate-limit → 403 trên upload.wikimedia.org
+  - PHẢI dùng requests.get() tươi (không session) với User-Agent rõ ràng
+  - Image.open(resp.raw) KHÔNG dùng được khi có redirect (raw rỗng sau redirect)
+    → Dùng Image.open(BytesIO(resp.content)) thay thế
+  - URL dạng Special:FilePath?width=400 redirect đến upload.wikimedia.org/thumb/
+    → Ảnh nhỏ (< width) serve trực tiếp từ commons, ảnh lớn cần thumbnail
+
+================================================================================
+[TRẠNG THÁI DỮ LIỆU]
+--------------------------------------------------------------------------------
+data/raw/combined_raw.csv          : 652 facts (500 người + 88 di tích + 64 sự kiện)
+data/spatial/enriched.csv          : 652 facts, l_h_lat 96.6%, l_t_lat 98.8%
+data/spatial/geocode_cache.csv     : cache geocoding (tránh gọi API lại)
+data/visual/images/                : ảnh tải về từ Wikidata P18 + Wikipedia
+data/visual/vit_features.npz       : CLS embeddings 768-dim, key = QID
+data/visual/visual_triplets.json   : visual triplets (CLIP zero-shot), key = QID
+data/visual/visual_enriched.csv    : 652 facts + has_image + clip_score + reliability_score
+
+================================================================================
