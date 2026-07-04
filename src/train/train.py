@@ -283,6 +283,7 @@ def train_one_seed(cfg: dict, seed: int, device: str, tag: str = "default") -> d
     history = []
 
     nan_max_ratio = cfg.get("train", {}).get("nan_stop_ratio", 0.05)  # >5% mẫu NaN trong 1 epoch -> DỪNG THẬT (không âm thầm bỏ qua)
+    stopped_reason = "max_epochs_reached"  # mặc định — ghi đè thành "early_stop" nếu vòng lặp break sớm
 
     for epoch in range(max_epochs):
         t0 = time.time()
@@ -338,11 +339,19 @@ def train_one_seed(cfg: dict, seed: int, device: str, tag: str = "default") -> d
             epochs_without_improve += 1
             if epochs_without_improve >= patience:
                 logger.info(f"Early stop tại epoch {epoch} (patience={patience}).")
+                stopped_reason = "early_stop"
                 break
 
+    best_epoch_entry = max(history, key=lambda h: h["mrr"]) if history else None
     result = {
         "seed": seed, "best_val_mrr": best_mrr, "history": history,
         "alpha": cfg["retrieval"]["alpha"], "tag": tag,
+        "n_epochs_trained": len(history), "max_epochs": max_epochs, "patience": patience,
+        "stopped_reason": stopped_reason,  # "early_stop" | "max_epochs_reached"
+        "converged": stopped_reason in ("early_stop", "max_epochs_reached"),
+        "best_val_hit1": best_epoch_entry["hit@1"] if best_epoch_entry else None,
+        "best_val_hit3": best_epoch_entry["hit@3"] if best_epoch_entry else None,
+        "best_val_hit10": best_epoch_entry["hit@10"] if best_epoch_entry else None,
     }
     with open(result_path, "w", encoding="utf-8") as f:
         json.dump(result, f, ensure_ascii=False, indent=2)

@@ -34,11 +34,22 @@ SCENARIOS = [
 ]
 
 
-def run_all(seed: int = 42, dry_run: bool = True):
+def run_all(seed: int = 42, dry_run: bool = True, checkpoint_root: str | None = None, results_dir: str | None = None):
+    checkpoint_root = checkpoint_root or os.path.join(ROOT, "results", "training", "checkpoints_ablation")
+    results_dir = results_dir or os.path.join(ROOT, "results", "training")
+
     SCENARIOS_sorted = sorted(SCENARIOS, key=lambda s: s[1])
     results = []
     for name, priority, overrides in SCENARIOS_sorted:
-        cmd = [sys.executable, "-m", "src.train.train", "--seeds", str(seed)]
+        # --tag={name} bắt buộc — nếu không, MỌI kịch bản dùng tag mặc định
+        # "default" và GHI ĐÈ LẪN NHAU lên cùng 1 file kết quả (bug đã sửa,
+        # xem docs/DECISIONS.md). checkpoint_dir cũng phải tách riêng theo
+        # kịch bản vì cùng seed=42 -> cùng tên file seed42_best.pt.
+        cmd = [
+            sys.executable, "-m", "src.train.train", "--seeds", str(seed), "--tag", name,
+            "--set", f"train.checkpoint_dir={os.path.join(checkpoint_root, name)}",
+            "--set", f"train.results_dir={results_dir}",
+        ]
         for ov in overrides:
             cmd += ["--set", ov]
         print(f"[priority {priority}] {name}: {' '.join(cmd)}")
@@ -65,5 +76,10 @@ if __name__ == "__main__":
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--execute", action="store_true",
                          help="Thực sự chạy (mặc định chỉ in lệnh — dry run, vì cần GPU Colab)")
+    parser.add_argument("--checkpoint_root", default=None,
+                         help="Thư mục gốc checkpoint (Drive khi chạy Colab) — mỗi kịch bản 1 thư mục con")
+    parser.add_argument("--results_dir", default=None,
+                         help="Thư mục kết quả (Drive khi chạy Colab), CHUNG cho mọi kịch bản (phân biệt qua --tag)")
     args = parser.parse_args()
-    run_all(seed=args.seed, dry_run=not args.execute)
+    run_all(seed=args.seed, dry_run=not args.execute,
+             checkpoint_root=args.checkpoint_root, results_dir=args.results_dir)

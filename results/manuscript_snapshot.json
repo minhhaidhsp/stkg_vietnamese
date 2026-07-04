@@ -1,0 +1,542 @@
+{
+  "metadata": {
+    "generated_at": "2026-07-04T18:12:35.218950",
+    "git_commit": "b9c3c88b8d673d08f05185d737a58e2a84925b02",
+    "checkpoint_root_scanned": "D:\\Projects\\STKG\\stkg_vietnamese\\results\\training\\checkpoints",
+    "results_dir_scanned": "D:\\Projects\\STKG\\stkg_vietnamese\\results\\training",
+    "is_provisional": true,
+    "missing": [
+      "C2 (grid search alpha): 5/5 điểm chưa hoàn tất — ['alpha_0.1', 'alpha_0.3', 'alpha_0.5', 'alpha_0.7', 'alpha_0.9']",
+      "C3 (huấn luyện đầy đủ): 3/3 seed chưa hoàn tất (seed ['42', '43', '44'])",
+      "Baseline: 8/8 chưa chạy được — ['think_on_graph', 'vintern_1b_v2_zeroshot', 'qwen2.5_vl_7b_zeroshot', 'subgtr_retrain', 'embedkgqa', 'cronkgqa', 'tempoqr', 'gentkgqa']",
+      "Ablation (Bảng 6): 8/8 kịch bản chưa chạy xong — ['5_alpha_1_pure_semantic', '6_no_image_channel', '1_full_model_baseline', '2_no_inward_attention', '3_no_spatial', '4_no_temporal', '7_no_visual_reliability', '8_qa_only']",
+      "figure2: Chưa có — chạy src/eval/run_full_eval.py trước (cần checkpoint C3).",
+      "figure4: CHƯA CÓ SCRIPT xuất attention weights theo layer cho 1 câu hỏi ví dụ — cần viết thêm trong src/eval/ hoặc src/viz/ trước khi có dữ liệu.",
+      "figure5: CHƯA CÓ SCRIPT xuất phân phối không gian cho 1 câu hỏi ví dụ — cần viết thêm trong src/eval/ hoặc src/viz/ trước khi có dữ liệu.",
+      "figure6: CHƯA chạy — cần train nhiều lần với tỷ lệ dữ liệu 20/40/60/80/100% (C5 mục 5, đã duyệt trước nhưng chưa có script con riêng cho scaling)."
+    ]
+  },
+  "training_status": {
+    "alpha_0.1": {
+      "42": {
+        "status": "not_started",
+        "checkpoint_path": null,
+        "result_path": null,
+        "n_epochs_trained": null,
+        "max_epochs": null,
+        "patience": null,
+        "stopped_reason": null,
+        "converged": null,
+        "best_val_mrr": null,
+        "best_val_hit1": null,
+        "best_val_hit3": null,
+        "best_val_hit10": null
+      }
+    },
+    "alpha_0.3": {
+      "42": {
+        "status": "not_started",
+        "checkpoint_path": null,
+        "result_path": null,
+        "n_epochs_trained": null,
+        "max_epochs": null,
+        "patience": null,
+        "stopped_reason": null,
+        "converged": null,
+        "best_val_mrr": null,
+        "best_val_hit1": null,
+        "best_val_hit3": null,
+        "best_val_hit10": null
+      }
+    },
+    "alpha_0.5": {
+      "42": {
+        "status": "not_started",
+        "checkpoint_path": null,
+        "result_path": null,
+        "n_epochs_trained": null,
+        "max_epochs": null,
+        "patience": null,
+        "stopped_reason": null,
+        "converged": null,
+        "best_val_mrr": null,
+        "best_val_hit1": null,
+        "best_val_hit3": null,
+        "best_val_hit10": null
+      }
+    },
+    "alpha_0.7": {
+      "42": {
+        "status": "not_started",
+        "checkpoint_path": null,
+        "result_path": null,
+        "n_epochs_trained": null,
+        "max_epochs": null,
+        "patience": null,
+        "stopped_reason": null,
+        "converged": null,
+        "best_val_mrr": null,
+        "best_val_hit1": null,
+        "best_val_hit3": null,
+        "best_val_hit10": null
+      }
+    },
+    "alpha_0.9": {
+      "42": {
+        "status": "not_started",
+        "checkpoint_path": null,
+        "result_path": null,
+        "n_epochs_trained": null,
+        "max_epochs": null,
+        "patience": null,
+        "stopped_reason": null,
+        "converged": null,
+        "best_val_mrr": null,
+        "best_val_hit1": null,
+        "best_val_hit3": null,
+        "best_val_hit10": null
+      }
+    },
+    "full_run": {
+      "42": {
+        "status": "not_started",
+        "checkpoint_path": null,
+        "result_path": null,
+        "n_epochs_trained": null,
+        "max_epochs": null,
+        "patience": null,
+        "stopped_reason": null,
+        "converged": null,
+        "best_val_mrr": null,
+        "best_val_hit1": null,
+        "best_val_hit3": null,
+        "best_val_hit10": null
+      },
+      "43": {
+        "status": "not_started",
+        "checkpoint_path": null,
+        "result_path": null,
+        "n_epochs_trained": null,
+        "max_epochs": null,
+        "patience": null,
+        "stopped_reason": null,
+        "converged": null,
+        "best_val_mrr": null,
+        "best_val_hit1": null,
+        "best_val_hit3": null,
+        "best_val_hit10": null
+      },
+      "44": {
+        "status": "not_started",
+        "checkpoint_path": null,
+        "result_path": null,
+        "n_epochs_trained": null,
+        "max_epochs": null,
+        "patience": null,
+        "stopped_reason": null,
+        "converged": null,
+        "best_val_mrr": null,
+        "best_val_hit1": null,
+        "best_val_hit3": null,
+        "best_val_hit10": null
+      }
+    }
+  },
+  "main_results": {
+    "proposed_model_val": null,
+    "baselines": [
+      {
+        "name": "think_on_graph",
+        "group": "2_llm_kg",
+        "output_type": "free_text",
+        "status": "SKIPPED_NOT_IMPLEMENTED",
+        "reason": "Think-on-Graph CHƯA triển khai — cần chốt LLM agent dùng và đọc đúng thuật toán duyệt đồ thị gốc trước khi viết code (xem docstring)."
+      },
+      {
+        "name": "vintern_1b_v2_zeroshot",
+        "group": "3_vlm",
+        "output_type": "free_text",
+        "status": "SKIPPED_SETUP_ERROR",
+        "reason": "KeyError: 'architectures'\nTraceback (most recent call last):\n  File \"D:\\Projects\\STKG\\stkg_vietnamese\\src\\baselines\\run_baselines.py\", line 37, in run_baseline\n    wrapper = cls(cfg)\n  File \"D:\\Projects\\STKG\\stkg_vietnamese\\src\\baselines\\vintern_zeroshot.py\", line 29, in __init__\n    self.model = AutoModel.from_pretrained(name, trust_remote_code=True).eval()\n                 ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python314\\Lib\\site-packages\\transformers\\models\\auto\\auto_factory.py\", line 319, in from_pretrained\n    config, kwargs = AutoConfig.from_pretrained(\n                     ~~~~~~~~~~~~~~~~~~~~~~~~~~^\n        pretrained_model_name_or_path,\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n    ...<4 lines>...\n        **kwargs,\n        ^^^^^^^^^\n    )\n    ^\n  File \"C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python314\\Lib\\site-packages\\transformers\\models\\auto\\configuration_auto.py\", line 1447, in from_pretrained\n    return config_class.from_pretrained(pretrained_model_name_or_path, **kwargs)\n           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python314\\Lib\\site-packages\\transformers\\configuration_utils.py\", line 554, in from_pretrained\n    return cls.from_dict(config_dict, **kwargs)\n           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python314\\Lib\\site-packages\\transformers\\configuration_utils.py\", line 744, in from_dict\n    logger.info(f\"Model config {config}\")\n                               ^^^^^^^^\n  File \"C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python314\\Lib\\site-packages\\transformers\\configuration_utils.py\", line 827, in __repr__\n    return f\"{self.__class__.__name__} {self.to_json_string()}\"\n                                        ~~~~~~~~~~~~~~~~~~~^^\n  File \"C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python314\\Lib\\site-packages\\transformers\\configuration_utils.py\", line 938, in to_json_string\n    config_dict = self.to_diff_dict()\n  File \"C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python314\\Lib\\site-packages\\transformers\\configuration_utils.py\", line 847, in to_diff_dict\n    class_config_dict = self.__class__().to_dict() if not self.has_no_defaults_at_init else {}\n                        ~~~~~~~~~~~~~~^^\n  File \"C:\\Users\\Administrator\\.cache\\huggingface\\modules\\transformers_modules\\_5CD_hyphen_AI\\Vintern_hyphen_1B_hyphen_v2\\c3f01cf5b55816c092fb493babc672b0dc33c8bc\\configuration_internvl_chat.py\", line 49, in __init__\n    if llm_config['architectures'][0] == 'LlamaForCausalLM':\n       ~~~~~~~~~~^^^^^^^^^^^^^^^^^\nKeyError: 'architectures'\n"
+      },
+      {
+        "name": "qwen2.5_vl_7b_zeroshot",
+        "group": "3_vlm",
+        "output_type": "free_text",
+        "status": "SKIPPED_NOT_IMPLEMENTED",
+        "reason": "Qwen2.5-VL-7B cần GPU thật (Colab) để tải/chạy — chưa thử ở máy local. Dùng transformers.Qwen2VLForConditionalGeneration.from_pretrained('Qwen/Qwen2.5-VL-7B-Instruct') khi có GPU."
+      },
+      {
+        "name": "subgtr_retrain",
+        "group": "1_embedding",
+        "output_type": "ranked_entities",
+        "status": "SKIPPED_NOT_IMPLEMENTED",
+        "reason": "SubGTR cần clone repo gốc + viết adapter dữ liệu — chưa xác định URL repo chính xác, chưa làm ở phiên này."
+      },
+      {
+        "name": "embedkgqa",
+        "group": "1_embedding",
+        "output_type": "ranked_entities",
+        "status": "SKIPPED_NOT_IMPLEMENTED",
+        "reason": "embedkgqa: chưa clone repo (CHƯA XÁC ĐỊNH), chưa viết adapter dữ liệu. Nếu clone+setup dependency vượt quá 3 giờ, BỎ và ghi log lý do vào docs/DECISIONS.md thay vì cố hoàn thiện — theo đúng quy tắc B2."
+      },
+      {
+        "name": "cronkgqa",
+        "group": "1_embedding",
+        "output_type": "ranked_entities",
+        "status": "SKIPPED_NOT_IMPLEMENTED",
+        "reason": "cronkgqa: chưa clone repo (CHƯA XÁC ĐỊNH), chưa viết adapter dữ liệu. Nếu clone+setup dependency vượt quá 3 giờ, BỎ và ghi log lý do vào docs/DECISIONS.md thay vì cố hoàn thiện — theo đúng quy tắc B2."
+      },
+      {
+        "name": "tempoqr",
+        "group": "1_embedding",
+        "output_type": "ranked_entities",
+        "status": "SKIPPED_NOT_IMPLEMENTED",
+        "reason": "tempoqr: chưa clone repo (CHƯA XÁC ĐỊNH), chưa viết adapter dữ liệu. Nếu clone+setup dependency vượt quá 3 giờ, BỎ và ghi log lý do vào docs/DECISIONS.md thay vì cố hoàn thiện — theo đúng quy tắc B2."
+      },
+      {
+        "name": "gentkgqa",
+        "group": "2_llm_kg",
+        "output_type": "free_text",
+        "status": "SKIPPED_NOT_IMPLEMENTED",
+        "reason": "gentkgqa: chưa clone repo (CHƯA XÁC ĐỊNH), chưa viết adapter dữ liệu. Nếu clone+setup dependency vượt quá 3 giờ, BỎ và ghi log lý do vào docs/DECISIONS.md thay vì cố hoàn thiện — theo đúng quy tắc B2."
+      }
+    ]
+  },
+  "ablation": {
+    "5_alpha_1_pure_semantic": {
+      "status": "not_started",
+      "priority": 1,
+      "overrides": [
+        "retrieval.alpha=1.0"
+      ],
+      "best_val_mrr": null,
+      "best_val_hit1": null,
+      "best_val_hit3": null,
+      "best_val_hit10": null
+    },
+    "6_no_image_channel": {
+      "status": "not_started",
+      "priority": 1,
+      "overrides": [
+        "ablation.disable_image=true"
+      ],
+      "best_val_mrr": null,
+      "best_val_hit1": null,
+      "best_val_hit3": null,
+      "best_val_hit10": null
+    },
+    "1_full_model_baseline": {
+      "status": "not_started",
+      "priority": 2,
+      "overrides": [],
+      "best_val_mrr": null,
+      "best_val_hit1": null,
+      "best_val_hit3": null,
+      "best_val_hit10": null
+    },
+    "2_no_inward_attention": {
+      "status": "not_started",
+      "priority": 2,
+      "overrides": [
+        "ablation.disable_inward_attention=true"
+      ],
+      "best_val_mrr": null,
+      "best_val_hit1": null,
+      "best_val_hit3": null,
+      "best_val_hit10": null
+    },
+    "3_no_spatial": {
+      "status": "not_started",
+      "priority": 2,
+      "overrides": [
+        "ablation.disable_spatial=true"
+      ],
+      "best_val_mrr": null,
+      "best_val_hit1": null,
+      "best_val_hit3": null,
+      "best_val_hit10": null
+    },
+    "4_no_temporal": {
+      "status": "not_started",
+      "priority": 2,
+      "overrides": [
+        "ablation.disable_temporal=true"
+      ],
+      "best_val_mrr": null,
+      "best_val_hit1": null,
+      "best_val_hit3": null,
+      "best_val_hit10": null
+    },
+    "7_no_visual_reliability": {
+      "status": "not_started",
+      "priority": 2,
+      "overrides": [
+        "loss.lambda_vg=0.0",
+        "model.visual_reliability_module.enabled=false"
+      ],
+      "best_val_mrr": null,
+      "best_val_hit1": null,
+      "best_val_hit3": null,
+      "best_val_hit10": null
+    },
+    "8_qa_only": {
+      "status": "not_started",
+      "priority": 2,
+      "overrides": [
+        "loss.lambda_stkg=0.0",
+        "loss.lambda_vg=0.0"
+      ],
+      "best_val_mrr": null,
+      "best_val_hit1": null,
+      "best_val_hit3": null,
+      "best_val_hit10": null
+    }
+  },
+  "dataset_stats": {
+    "table3_split_stats": {
+      "generated_at": "2026-07-04T00:34:38.599452",
+      "overview": [
+        {
+          "split": "train",
+          "n_facts": 5317,
+          "n_entities": 5816,
+          "n_questions": 13336,
+          "avg_question_len_words": 8.96
+        },
+        {
+          "split": "val",
+          "n_facts": 665,
+          "n_entities": 927,
+          "n_questions": 1669,
+          "avg_question_len_words": 8.94
+        },
+        {
+          "split": "test",
+          "n_facts": 664,
+          "n_entities": 924,
+          "n_questions": 1674,
+          "avg_question_len_words": 9.0
+        }
+      ],
+      "by_relation": [
+        {
+          "split": "train",
+          "relation": "bornIn",
+          "n_questions": 6182,
+          "pct_of_split": 46.36
+        },
+        {
+          "split": "train",
+          "relation": "diedIn",
+          "n_questions": 1322,
+          "pct_of_split": 9.91
+        },
+        {
+          "split": "train",
+          "relation": "occurredAt",
+          "n_questions": 792,
+          "pct_of_split": 5.94
+        },
+        {
+          "split": "train",
+          "relation": "locatedIn",
+          "n_questions": 5040,
+          "pct_of_split": 37.79
+        },
+        {
+          "split": "val",
+          "relation": "bornIn",
+          "n_questions": 772,
+          "pct_of_split": 46.26
+        },
+        {
+          "split": "val",
+          "relation": "diedIn",
+          "n_questions": 166,
+          "pct_of_split": 9.95
+        },
+        {
+          "split": "val",
+          "relation": "occurredAt",
+          "n_questions": 101,
+          "pct_of_split": 6.05
+        },
+        {
+          "split": "val",
+          "relation": "locatedIn",
+          "n_questions": 630,
+          "pct_of_split": 37.75
+        },
+        {
+          "split": "test",
+          "relation": "bornIn",
+          "n_questions": 774,
+          "pct_of_split": 46.24
+        },
+        {
+          "split": "test",
+          "relation": "diedIn",
+          "n_questions": 164,
+          "pct_of_split": 9.8
+        },
+        {
+          "split": "test",
+          "relation": "occurredAt",
+          "n_questions": 100,
+          "pct_of_split": 5.97
+        },
+        {
+          "split": "test",
+          "relation": "locatedIn",
+          "n_questions": 636,
+          "pct_of_split": 37.99
+        }
+      ]
+    },
+    "table4_template_category": [
+      {
+        "template_id": "bornIn_t1",
+        "relation": "bornIn",
+        "mask": "t",
+        "question_type_ct": "location_query",
+        "spatiotemporal_category": "thuan_khong_gian"
+      },
+      {
+        "template_id": "bornIn_t2",
+        "relation": "bornIn",
+        "mask": "t",
+        "question_type_ct": "location_query",
+        "spatiotemporal_category": "thuan_khong_gian"
+      },
+      {
+        "template_id": "diedIn_t1",
+        "relation": "diedIn",
+        "mask": "t",
+        "question_type_ct": "location_query",
+        "spatiotemporal_category": "thuan_khong_gian"
+      },
+      {
+        "template_id": "diedIn_t2",
+        "relation": "diedIn",
+        "mask": "t",
+        "question_type_ct": "location_query",
+        "spatiotemporal_category": "thuan_khong_gian"
+      },
+      {
+        "template_id": "occurredAt_t1",
+        "relation": "occurredAt",
+        "mask": "t",
+        "question_type_ct": "location_query",
+        "spatiotemporal_category": "thuan_khong_gian"
+      },
+      {
+        "template_id": "occurredAt_t2",
+        "relation": "occurredAt",
+        "mask": "t",
+        "question_type_ct": "location_query",
+        "spatiotemporal_category": "thuan_khong_gian"
+      },
+      {
+        "template_id": "occurredAt_t3",
+        "relation": "occurredAt",
+        "mask": "t",
+        "question_type_ct": "location_query",
+        "spatiotemporal_category": "thuan_khong_gian"
+      },
+      {
+        "template_id": "occurredAt_t4_reverse",
+        "relation": "occurredAt",
+        "mask": "h",
+        "question_type_ct": "entity_query",
+        "spatiotemporal_category": "ket_hop"
+      },
+      {
+        "template_id": "locatedIn_t1",
+        "relation": "locatedIn",
+        "mask": "t",
+        "question_type_ct": "location_query",
+        "spatiotemporal_category": "thuan_khong_gian"
+      },
+      {
+        "template_id": "locatedIn_t2",
+        "relation": "locatedIn",
+        "mask": "t",
+        "question_type_ct": "location_query",
+        "spatiotemporal_category": "thuan_khong_gian"
+      },
+      {
+        "template_id": "locatedIn_t3",
+        "relation": "locatedIn",
+        "mask": "t",
+        "question_type_ct": "location_query",
+        "spatiotemporal_category": "thuan_khong_gian"
+      },
+      {
+        "template_id": "locatedIn_t4",
+        "relation": "locatedIn",
+        "mask": "t",
+        "question_type_ct": "location_query",
+        "spatiotemporal_category": "ket_hop"
+      },
+      {
+        "template_id": "(không có)",
+        "relation": "-",
+        "mask": "-",
+        "question_type_ct": "-",
+        "spatiotemporal_category": "thuan_thoi_gian"
+      }
+    ],
+    "table7_question_type_x_image": [
+      {
+        "spatiotemporal_category": "ket_hop",
+        "has_image": false,
+        "n_questions": 1521
+      },
+      {
+        "spatiotemporal_category": "thuan_khong_gian",
+        "has_image": false,
+        "n_questions": 15082
+      },
+      {
+        "spatiotemporal_category": "thuan_khong_gian",
+        "has_image": true,
+        "n_questions": 76
+      }
+    ],
+    "auto_checks": {
+      "generated_at": "2026-07-04T00:34:53.378412",
+      "full_questions_17450": {
+        "n_total": 16679,
+        "n_flagged": 457,
+        "pct_flagged": 2.74,
+        "reason_counts": {
+          "answer_leakage": 268,
+          "tau_ngoai_800_2025": 177,
+          "hoi_nam_nhung_thieu_tau": 15
+        }
+      },
+      "validation_sample_500": {
+        "n_total": 500,
+        "n_flagged": 13,
+        "pct_flagged": 2.6,
+        "reason_counts": {
+          "answer_leakage": 10,
+          "tau_ngoai_800_2025": 2,
+          "hoi_nam_nhung_thieu_tau": 1
+        }
+      }
+    },
+    "human_validation": null
+  },
+  "figure_data": {
+    "figure2_latency": null,
+    "figure2_note": "Chưa có — chạy src/eval/run_full_eval.py trước (cần checkpoint C3).",
+    "figure4_attention_by_layer": null,
+    "figure4_note": "CHƯA CÓ SCRIPT xuất attention weights theo layer cho 1 câu hỏi ví dụ — cần viết thêm trong src/eval/ hoặc src/viz/ trước khi có dữ liệu.",
+    "figure5_spatial_distribution": null,
+    "figure5_note": "CHƯA CÓ SCRIPT xuất phân phối không gian cho 1 câu hỏi ví dụ — cần viết thêm trong src/eval/ hoặc src/viz/ trước khi có dữ liệu.",
+    "figure6_data_scaling": null,
+    "figure6_note": "CHƯA chạy — cần train nhiều lần với tỷ lệ dữ liệu 20/40/60/80/100% (C5 mục 5, đã duyệt trước nhưng chưa có script con riêng cho scaling)."
+  }
+}
