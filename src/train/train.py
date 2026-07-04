@@ -228,7 +228,35 @@ def evaluate(m: Modules, df: pd.DataFrame, entity_universe: pd.DataFrame, max_sa
     return summarize_ranks(ranks)
 
 
-def train_one_seed(cfg: dict, seed: int, device: str) -> dict:
+def _resolve_dir(path: str) -> str:
+    """os.path.join(ROOT, path) giữ nguyên path nếu đã tuyệt đối (vd Drive
+    /content/drive/...) — os.path.join bỏ ROOT khi path thứ 2 tuyệt đối."""
+    return os.path.join(ROOT, path)
+
+
+def train_one_seed(cfg: dict, seed: int, device: str, tag: str = "default") -> dict:
+    """Mỗi seed là 1 ĐƠN VỊ ĐỘC LẬP resume/skip được: nếu checkpoint tốt nhất
+    VÀ file kết quả (MRR) của đúng seed+tag này đã tồn tại, bỏ qua huấn
+    luyện (không tải Vintern, không train lại), load MRR từ file kết quả có
+    sẵn và trả về ngay — quan trọng cho C3 (3 seed, tốn thời gian nhất, rủi
+    ro runtime Colab bị ngắt giữa chừng cao nhất): xong seed nào lưu kết quả
+    seed đó ngay, không chờ xong cả 3 seed."""
+    ckpt_dir = _resolve_dir(cfg["train"]["checkpoint_dir"])
+    results_dir = _resolve_dir(cfg["train"].get("results_dir", "results/training"))
+    os.makedirs(ckpt_dir, exist_ok=True)
+    os.makedirs(results_dir, exist_ok=True)
+
+    ckpt_path = os.path.join(ckpt_dir, f"seed{seed}_best.pt")
+    result_path = os.path.join(results_dir, f"{tag}_seed{seed}_result.json")
+
+    if os.path.exists(ckpt_path) and os.path.exists(result_path):
+        with open(result_path, encoding="utf-8") as f:
+            existing = json.load(f)
+        logger.info(f"[seed={seed}, tag={tag}] ĐÃ CÓ kết quả đầy đủ (checkpoint + result json) "
+                    f"-> bỏ qua huấn luyện, dùng lại best_val_mrr={existing['best_val_mrr']:.4f} "
+                    f"từ {result_path}")
+        return existing
+
     torch.manual_seed(seed)
     m = Modules(cfg, device)
 
@@ -253,9 +281,6 @@ def train_one_seed(cfg: dict, seed: int, device: str) -> dict:
     best_mrr = -1.0
     epochs_without_improve = 0
     history = []
-
-    ckpt_dir = os.path.join(ROOT, cfg["train"]["checkpoint_dir"])
-    os.makedirs(ckpt_dir, exist_ok=True)
 
     nan_max_ratio = cfg.get("train", {}).get("nan_stop_ratio", 0.05)  # >5% mẫu NaN trong 1 epoch -> DỪNG THẬT (không âm thầm bỏ qua)
 
@@ -315,7 +340,14 @@ def train_one_seed(cfg: dict, seed: int, device: str) -> dict:
                 logger.info(f"Early stop tại epoch {epoch} (patience={patience}).")
                 break
 
-    return {"seed": seed, "best_val_mrr": best_mrr, "history": history}
+    result = {
+        "seed": seed, "best_val_mrr": best_mrr, "history": history,
+        "alpha": cfg["retrieval"]["alpha"], "tag": tag,
+    }
+    with open(result_path, "w", encoding="utf-8") as f:
+        json.dump(result, f, ensure_ascii=False, indent=2)
+    logger.info(f"[seed={seed}, tag={tag}] Đã lưu kết quả -> {result_path}")
+    return result
 
 
 def main():
@@ -335,16 +367,21 @@ def main():
     all_results = []
     for seed in seeds:
         logger.info(f"=== Bắt đầu huấn luyện seed={seed} trên device={device} (tag={args.tag}) ===")
-        result = train_one_seed(cfg, seed, device)
-        result["alpha"] = cfg["retrieval"]["alpha"]
-        result["tag"] = args.tag
+        # train_one_seed tự resume/skip nếu seed này đã có đủ checkpoint+kết
+        # quả, và tự ghi kết quả của NÓ ngay khi xong — không chờ các seed
+        # khác trong vòng lặp này.
+        result = train_one_seed(cfg, seed, device, tag=args.tag)
         all_results.append(result)
 
-    out_path = os.path.join(ROOT, "results", "training", f"train_results_{args.tag}.json")
-    os.makedirs(os.path.dirname(out_path), exist_ok=True)
+    # File tổng hợp (tiện xem nhanh cả batch seeds) — mỗi seed đã có file
+    # riêng {tag}_seed{seed}_result.json ghi ngay sau khi xong, đây chỉ là
+    # bản gộp, ghi lại vào ĐÚNG results_dir (có thể là Drive) như các file seed.
+    results_dir = _resolve_dir(cfg["train"].get("results_dir", "results/training"))
+    os.makedirs(results_dir, exist_ok=True)
+    out_path = os.path.join(results_dir, f"train_results_{args.tag}.json")
     with open(out_path, "w", encoding="utf-8") as f:
         json.dump(all_results, f, ensure_ascii=False, indent=2)
-    logger.info(f"Đã lưu kết quả -> {out_path}")
+    logger.info(f"Đã lưu kết quả gộp -> {out_path}")
 
     best = max(all_results, key=lambda r: r["best_val_mrr"])
     print(f"\n==RESULT== tag={args.tag} alpha={cfg['retrieval']['alpha']} "

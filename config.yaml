@@ -201,7 +201,11 @@ ablation:
 train:
   seeds: [42, 43, 44]   # multi-seed
   checkpoint_dir: checkpoints/   # Google Drive khi chạy trên Colab (mount qua notebooks/)
+  results_dir: results/training  # Ghi đè thành đường dẫn Drive khi chạy Colab (vd
+                                   # /content/drive/MyDrive/ViSTKG-QA/results/training) —
+                                   # để KHÔNG mất kết quả MRR mỗi seed/alpha khi runtime bị ngắt.
   device: cpu            # ghi đè thành cuda khi chạy trên Colab
+  nan_stop_ratio: 0.05    # >5% mẫu NaN/epoch -> dừng thật (xem train_one_seed)
 
 mock_data:
   # Dùng cho unit test / debug trên VS Code local, CPU, không cần GPU
