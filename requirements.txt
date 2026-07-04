@@ -1,3 +1,7 @@
+# YÊU CẦU: Python 3.10-3.12 (KHÔNG dùng 3.13/3.14 cho môi trường huấn luyện —
+# transformers==4.42.3 pin cứng bên dưới cần tokenizers~=0.19, package này
+# CHƯA có wheel dựng sẵn cho Python 3.13/3.14, chỉ build được từ source nếu
+# có Rust/Cargo. Dùng venv Python 3.11 riêng: `py -3.11 -m venv .venv`.
 requests>=2.31.0
 SPARQLWrapper>=2.0.0
 wikipedia-api>=0.6.0
@@ -5,6 +9,32 @@ pandas>=2.0.0
 tqdm>=4.65.0
 Pillow>=10.0.0
 torch>=2.0.0
-transformers>=5.0.0
+# Pin CỨNG (không phải >=): Vintern-1B-v2 dùng code tùy biến
+# (configuration_internvl_chat.py) viết cho đúng bản 4.42.3 (ghi trong
+# config.json của model trên HuggingFace). Bản transformers>=5.0 gây
+# KeyError: 'architectures' khi load model này (xác nhận thật, xem
+# docs/manuscript_methodology.md Bước 4) do to_diff_dict() bản mới gọi
+# self.__class__() không tham số, kích hoạt lại __init__ tùy biến với
+# llm_config rỗng.
+transformers==4.42.3
 numpy>=1.24.0
 scipy>=1.10.0
+
+# --- Bước 1+ : mô hình / huấn luyện / đánh giá (src/) ---
+PyYAML>=6.0
+# Pin CỨNG: peft>=0.13 import EncoderDecoderCache từ transformers, class này
+# CHƯA tồn tại trong transformers==4.42.3 (thêm ở bản sau) -> ImportError khi
+# collect test. Xác nhận thật: peft==0.12.0 (cùng thời điểm phát hành với
+# transformers 4.42.3, giữa 2024) hoạt động đúng, 46 pytest pass.
+peft==0.12.0          # LoRA adapters
+accelerate>=0.30.0    # huấn luyện trên Colab GPU
+timm>=0.9.0           # InternViT backbone
+einops>=0.7.0
+sentencepiece>=0.2.0  # tokenizer Qwen2
+faiss-cpu>=1.8.0       # tìm kiếm top-K trên STE embedding
+pytest>=8.0.0
+matplotlib>=3.8.0      # Bước 7: vẽ Hình 2,4,5,6
+scikit-learn>=1.4.0    # bootstrap thống kê, baseline embedding-based
+sacrebleu>=2.4.0        # BLEU cho Bước 2 (chất lượng câu hỏi sinh)
+rouge-score>=0.1.2      # ROUGE-L cho Bước 2
+openpyxl>=3.1.0          # xuất file .xlsx cho người thẩm định (validation_sample_500_for_annotators.xlsx)

@@ -1,0 +1,161 @@
+<svg width="1560" height="900" viewBox="0 0 1560 900" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#333333"/>
+    </marker>
+    <marker id="arrd" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#8a8a8a"/>
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="1560" height="900" fill="#ffffff"/>
+
+  <!-- ====================== INPUTS ====================== -->
+  <rect x="30" y="90" width="220" height="90" rx="10" fill="#ffffff" stroke="#4a4a4a" stroke-width="1.8"/>
+  <text x="140" y="126" text-anchor="middle" font-size="19" font-weight="bold" fill="#222">Câu hỏi tiếng Việt</text>
+  <text x="140" y="152" text-anchor="middle" font-size="18" font-style="italic" fill="#222">Q</text>
+
+  <rect x="30" y="230" width="220" height="90" rx="10" fill="#ffffff" stroke="#4a4a4a" stroke-width="1.8"/>
+  <text x="140" y="266" text-anchor="middle" font-size="19" font-weight="bold" fill="#222">Hình ảnh</text>
+  <text x="140" y="292" text-anchor="middle" font-size="18" font-style="italic" fill="#222">I</text>
+
+  <!-- ====================== ENCODERS (FROZEN) ====================== -->
+  <rect x="300" y="90" width="260" height="90" rx="10" fill="#e3e3e3" stroke="#6b6b6b" stroke-width="1.8"/>
+  <text x="430" y="118" text-anchor="middle" font-size="18" font-weight="bold" fill="#333">Bộ mã hóa ngôn ngữ</text>
+  <text x="430" y="141" text-anchor="middle" font-size="16" fill="#333">Enc_LM (đóng băng)</text>
+  <text x="430" y="164" text-anchor="middle" font-size="15" font-style="italic" fill="#555">CT (3): E_Q</text>
+
+  <rect x="300" y="230" width="260" height="90" rx="10" fill="#e3e3e3" stroke="#6b6b6b" stroke-width="1.8"/>
+  <text x="430" y="258" text-anchor="middle" font-size="18" font-weight="bold" fill="#333">Bộ mã hóa thị giác ViT</text>
+  <text x="430" y="281" text-anchor="middle" font-size="16" fill="#333">(đóng băng)</text>
+  <text x="430" y="304" text-anchor="middle" font-size="15" font-style="italic" fill="#555">CT (4): E_I</text>
+
+  <!-- ====================== PROJECTIONS (TRAINABLE) ====================== -->
+  <rect x="612" y="104" width="96" height="62" rx="10" fill="#fde3c8" stroke="#d97b2f" stroke-width="2"/>
+  <text x="660" y="130" text-anchor="middle" font-size="18" font-weight="bold" font-style="italic" fill="#8a4a10">W_q</text>
+  <text x="660" y="152" text-anchor="middle" font-size="13" fill="#8a4a10">(huấn luyện)</text>
+
+  <rect x="612" y="244" width="96" height="62" rx="10" fill="#fde3c8" stroke="#d97b2f" stroke-width="2"/>
+  <text x="660" y="270" text-anchor="middle" font-size="18" font-weight="bold" font-style="italic" fill="#8a4a10">W_v</text>
+  <text x="660" y="292" text-anchor="middle" font-size="13" fill="#8a4a10">(huấn luyện)</text>
+
+  <!-- ====================== FUSION X ====================== -->
+  <rect x="760" y="150" width="250" height="115" rx="10" fill="#e8f1fa" stroke="#4a7fb5" stroke-width="2"/>
+  <text x="885" y="180" text-anchor="middle" font-size="18" font-weight="bold" fill="#1f4e79">Hợp nhất đa phương thức</text>
+  <text x="885" y="207" text-anchor="middle" font-size="16" font-style="italic" fill="#1f4e79">X = [E_Q W_q ; E_I W_v]</text>
+  <text x="885" y="232" text-anchor="middle" font-size="15" fill="#1f4e79">CT (5)</text>
+  <text x="885" y="254" text-anchor="middle" font-size="13.5" fill="#43689a">(K, V cho luồng hướng vào)</text>
+
+  <!-- MeanPool -->
+  <rect x="795" y="303" width="180" height="52" rx="10" fill="#e8f1fa" stroke="#4a7fb5" stroke-width="1.6"/>
+  <text x="885" y="335" text-anchor="middle" font-size="16" fill="#1f4e79">Gộp trung bình &#8594; x&#772;</text>
+
+  <!-- ====================== SCENE GRAPH (TRAINABLE) ====================== -->
+  <rect x="300" y="370" width="260" height="100" rx="10" fill="#fde3c8" stroke="#d97b2f" stroke-width="2"/>
+  <text x="430" y="398" text-anchor="middle" font-size="17" font-weight="bold" fill="#8a4a10">Sinh đồ thị cảnh +</text>
+  <text x="430" y="421" text-anchor="middle" font-size="17" font-weight="bold" fill="#8a4a10">mô đun tin cậy &#961;</text>
+  <text x="430" y="446" text-anchor="middle" font-size="14" fill="#8a4a10">bộ ba trực quan (s, r, o) &#183; huấn luyện</text>
+  <text x="575" y="400" font-size="15" font-style="italic" fill="#c0392b">L_VG</text>
+
+  <!-- ====================== STKG CONTAINER ====================== -->
+  <rect x="30" y="560" width="560" height="190" rx="12" fill="#f7f7f2" stroke="#8a8a7a" stroke-width="1.8"/>
+  <text x="310" y="590" text-anchor="middle" font-size="18" font-weight="bold" fill="#333">Đồ thị tri thức không gian thời gian G</text>
+  <text x="310" y="615" text-anchor="middle" font-size="15.5" font-style="italic" fill="#444">Sự kiện sáu ngôi (h, r, t, &#964;, l_h, l_t) &#183; CT (1)</text>
+
+  <rect x="60" y="633" width="300" height="82" rx="10" fill="#fde3c8" stroke="#d97b2f" stroke-width="2"/>
+  <text x="210" y="661" text-anchor="middle" font-size="16.5" font-weight="bold" fill="#8a4a10">Bảng nhúng STE / RE</text>
+  <text x="210" y="684" text-anchor="middle" font-size="14.5" fill="#8a4a10">(huấn luyện) &#183; CT (2): s(f)</text>
+  <text x="210" y="704" text-anchor="middle" font-size="13.5" fill="#8a4a10">Lưới N_x &#215; N_y &#183; N_t lát thời gian</text>
+  <text x="392" y="662" font-size="15" font-style="italic" fill="#c0392b">L_STKG</text>
+
+  <!-- ====================== OUTWARD FLOW ====================== -->
+  <rect x="620" y="600" width="340" height="120" rx="10" fill="#e8f1fa" stroke="#4a7fb5" stroke-width="2.2"/>
+  <text x="790" y="628" text-anchor="middle" font-size="17" font-weight="bold" fill="#1f4e79">LUỒNG HƯỚNG RA: truy xuất</text>
+  <text x="790" y="650" text-anchor="middle" font-size="17" font-weight="bold" fill="#1f4e79">có nhận thức không gian thời gian</text>
+  <text x="790" y="676" text-anchor="middle" font-size="15" font-style="italic" fill="#1f4e79">rel(f) = &#945;&#183;cos(x&#772;, g(f)) &#8722; (1&#8722;&#945;)&#183;s&#770;(f)</text>
+  <text x="790" y="700" text-anchor="middle" font-size="14.5" fill="#1f4e79">CT (6) &#183; chọn Top-K</text>
+
+  <!-- ====================== INWARD FLOW ====================== -->
+  <rect x="1130" y="600" width="290" height="120" rx="10" fill="#e8f1fa" stroke="#4a7fb5" stroke-width="2.2"/>
+  <text x="1275" y="628" text-anchor="middle" font-size="17" font-weight="bold" fill="#1f4e79">LUỒNG HƯỚNG VÀO:</text>
+  <text x="1275" y="650" text-anchor="middle" font-size="17" font-weight="bold" fill="#1f4e79">dung hợp bằng chú ý chéo</text>
+  <text x="1275" y="676" text-anchor="middle" font-size="15" font-style="italic" fill="#1f4e79">r_m = Attn(q_m^Z; K, V từ X)</text>
+  <text x="1275" y="700" text-anchor="middle" font-size="14.5" fill="#1f4e79">CT (7) &#183; R_final = &#931; w_m r_m</text>
+
+  <!-- ====================== RESIDUAL ADD ====================== -->
+  <circle cx="1275" cy="520" r="22" fill="#ffffff" stroke="#333333" stroke-width="2"/>
+  <text x="1275" y="528" text-anchor="middle" font-size="22" font-weight="bold" fill="#333">+</text>
+  <text x="1332" y="512" font-size="14.5" fill="#333">cộng dư</text>
+  <text x="1332" y="531" font-size="14.5" font-style="italic" fill="#333">X &#8853; R_final</text>
+
+  <!-- ====================== LLM LAYERS (FROZEN + LoRA) ====================== -->
+  <rect x="1150" y="375" width="260" height="90" rx="10" fill="#e3e3e3" stroke="#6b6b6b" stroke-width="1.8"/>
+  <text x="1268" y="404" text-anchor="middle" font-size="16.5" font-weight="bold" fill="#333">Các lớp còn lại của LLM</text>
+  <text x="1268" y="427" text-anchor="middle" font-size="15" fill="#333">(đóng băng)</text>
+  <rect x="1338" y="431" width="62" height="26" rx="7" fill="#fde3c8" stroke="#d97b2f" stroke-width="1.8"/>
+  <text x="1369" y="449" text-anchor="middle" font-size="13.5" font-weight="bold" fill="#8a4a10">LoRA</text>
+
+  <!-- ====================== RANKING HEAD ====================== -->
+  <rect x="1150" y="225" width="260" height="90" rx="10" fill="#e8f1fa" stroke="#4a7fb5" stroke-width="2"/>
+  <text x="1280" y="253" text-anchor="middle" font-size="16.5" font-weight="bold" fill="#1f4e79">Đầu xếp hạng thực thể</text>
+  <text x="1280" y="276" text-anchor="middle" font-size="15" font-style="italic" fill="#1f4e79">p(e | Q, I, G) &#183; CT (8)</text>
+  <text x="1280" y="298" text-anchor="middle" font-size="13.5" fill="#43689a">so khớp u với STE(e), e &#8712; E</text>
+  <text x="1108" y="258" font-size="15" font-style="italic" fill="#c0392b">L_QA</text>
+
+  <!-- ====================== OUTPUT ====================== -->
+  <rect x="1150" y="55" width="260" height="75" rx="10" fill="#ffffff" stroke="#4a4a4a" stroke-width="1.8"/>
+  <text x="1280" y="86" text-anchor="middle" font-size="17" font-weight="bold" fill="#222">Danh sách thực thể</text>
+  <text x="1280" y="110" text-anchor="middle" font-size="17" font-weight="bold" fill="#222">trả lời A (xếp hạng)</text>
+
+  <!-- ====================== ARROWS ====================== -->
+  <!-- inputs to encoders -->
+  <line x1="250" y1="135" x2="296" y2="135" stroke="#333" stroke-width="2" marker-end="url(#arr)"/>
+  <line x1="250" y1="275" x2="296" y2="275" stroke="#333" stroke-width="2" marker-end="url(#arr)"/>
+  <!-- encoders to projections -->
+  <line x1="560" y1="135" x2="608" y2="135" stroke="#333" stroke-width="2" marker-end="url(#arr)"/>
+  <line x1="560" y1="275" x2="608" y2="275" stroke="#333" stroke-width="2" marker-end="url(#arr)"/>
+  <!-- projections to X -->
+  <path d="M 708 135 L 734 135 L 734 185 L 756 185" fill="none" stroke="#333" stroke-width="2" marker-end="url(#arr)"/>
+  <path d="M 708 275 L 734 275 L 734 230 L 756 230" fill="none" stroke="#333" stroke-width="2" marker-end="url(#arr)"/>
+  <!-- X to MeanPool -->
+  <line x1="885" y1="265" x2="885" y2="299" stroke="#333" stroke-width="2" marker-end="url(#arr)"/>
+  <!-- x-bar down to outward -->
+  <line x1="885" y1="355" x2="885" y2="596" stroke="#333" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="897" y="530" font-size="15" font-style="italic" fill="#333">x&#772;</text>
+  <!-- image to scene graph -->
+  <path d="M 140 320 L 140 420 L 296 420" fill="none" stroke="#333" stroke-width="2" marker-end="url(#arr)"/>
+  <!-- scene graph to KG (entity anchoring, dashed) -->
+  <path d="M 430 470 L 430 556" fill="none" stroke="#8a8a8a" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#arrd)"/>
+  <text x="442" y="520" font-size="14" fill="#666">neo thực thể</text>
+  <!-- KG to outward -->
+  <line x1="590" y1="660" x2="616" y2="660" stroke="#333" stroke-width="2" marker-end="url(#arr)"/>
+  <!-- outward to inward -->
+  <line x1="960" y1="660" x2="1126" y2="660" stroke="#333" stroke-width="2.2" marker-end="url(#arr)"/>
+  <text x="1043" y="647" text-anchor="middle" font-size="15" font-style="italic" fill="#333">G_sub</text>
+  <!-- inward up to residual -->
+  <line x1="1275" y1="600" x2="1275" y2="546" stroke="#333" stroke-width="2.2" marker-end="url(#arr)"/>
+  <text x="1215" y="575" font-size="15" font-style="italic" fill="#333">R_final</text>
+  <!-- X around right margin to residual -->
+  <path d="M 1010 175 L 1460 175 L 1460 520 L 1301 520" fill="none" stroke="#333" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="1472" y="352" font-size="15" font-style="italic" fill="#333">X</text>
+  <!-- residual to LLM -->
+  <line x1="1275" y1="498" x2="1275" y2="469" stroke="#333" stroke-width="2.2" marker-end="url(#arr)"/>
+  <!-- LLM to ranking -->
+  <line x1="1280" y1="375" x2="1280" y2="319" stroke="#333" stroke-width="2.2" marker-end="url(#arr)"/>
+  <text x="1292" y="352" font-size="15" font-style="italic" fill="#333">u</text>
+  <!-- ranking to output -->
+  <line x1="1280" y1="225" x2="1280" y2="134" stroke="#333" stroke-width="2.2" marker-end="url(#arr)"/>
+
+  <!-- ====================== LEGEND ====================== -->
+  <rect x="40" y="790" width="34" height="22" rx="5" fill="#e3e3e3" stroke="#6b6b6b" stroke-width="1.6"/>
+  <text x="84" y="807" font-size="15.5" fill="#222">Trọng số đóng băng (bộ mã hóa thị giác, mô hình ngôn ngữ)</text>
+
+  <rect x="560" y="790" width="34" height="22" rx="5" fill="#fde3c8" stroke="#d97b2f" stroke-width="1.6"/>
+  <text x="604" y="807" font-size="15.5" fill="#222">Thành phần huấn luyện (nhúng STE/RE, lớp chiếu, mô đun tin cậy, LoRA)</text>
+
+  <rect x="1180" y="790" width="34" height="22" rx="5" fill="#e8f1fa" stroke="#4a7fb5" stroke-width="1.6"/>
+  <text x="1224" y="807" font-size="15.5" fill="#222">Mô đun tính toán / biểu diễn</text>
+
+  <!-- multi-task note -->
+  <text x="40" y="850" font-size="15.5" fill="#c0392b" font-style="italic">Huấn luyện đa nhiệm &#8212; CT (9): L_total = &#955;&#8321;&#183;L_QA + &#955;&#8322;&#183;L_STKG + &#955;&#8323;&#183;L_VG (các nhãn đỏ chỉ vị trí phát sinh tín hiệu mất mát)</text>
+</svg>

@@ -32,8 +32,14 @@ WHERE {
     ?h wdt:P569 ?birth_date .
     BIND(YEAR(?birth_date) AS ?tau_start)
     BIND("bornIn" AS ?r)
-    ?h rdfs:label ?h_label . FILTER(LANG(?h_label) = "vi")
-    ?t rdfs:label ?t_label . FILTER(LANG(?t_label) = "vi")
+    OPTIONAL { ?h rdfs:label ?h_label_vi . FILTER(LANG(?h_label_vi) = "vi") }
+    OPTIONAL { ?h rdfs:label ?h_label_en . FILTER(LANG(?h_label_en) = "en") }
+    BIND(COALESCE(?h_label_vi, ?h_label_en) AS ?h_label)
+    FILTER(BOUND(?h_label))
+    OPTIONAL { ?t rdfs:label ?t_label_vi . FILTER(LANG(?t_label_vi) = "vi") }
+    OPTIONAL { ?t rdfs:label ?t_label_en . FILTER(LANG(?t_label_en) = "en") }
+    BIND(COALESCE(?t_label_vi, ?t_label_en) AS ?t_label)
+    FILTER(BOUND(?t_label))
     OPTIONAL {
       ?t p:P625/psv:P625 ?tn .
       ?tn wikibase:geoLatitude ?l_t_lat ; wikibase:geoLongitude ?l_t_lon .
@@ -51,8 +57,14 @@ WHERE {
     ?h wdt:P570 ?death_date .
     BIND(YEAR(?death_date) AS ?tau_start)
     BIND("diedIn" AS ?r)
-    ?h rdfs:label ?h_label . FILTER(LANG(?h_label) = "vi")
-    ?t rdfs:label ?t_label . FILTER(LANG(?t_label) = "vi")
+    OPTIONAL { ?h rdfs:label ?h_label_vi . FILTER(LANG(?h_label_vi) = "vi") }
+    OPTIONAL { ?h rdfs:label ?h_label_en . FILTER(LANG(?h_label_en) = "en") }
+    BIND(COALESCE(?h_label_vi, ?h_label_en) AS ?h_label)
+    FILTER(BOUND(?h_label))
+    OPTIONAL { ?t rdfs:label ?t_label_vi . FILTER(LANG(?t_label_vi) = "vi") }
+    OPTIONAL { ?t rdfs:label ?t_label_en . FILTER(LANG(?t_label_en) = "en") }
+    BIND(COALESCE(?t_label_vi, ?t_label_en) AS ?t_label)
+    FILTER(BOUND(?t_label))
     OPTIONAL {
       ?t p:P625/psv:P625 ?tn .
       ?tn wikibase:geoLatitude ?l_t_lat ; wikibase:geoLongitude ?l_t_lon .
@@ -63,7 +75,6 @@ WHERE {
     }
   }
 }
-LIMIT 500
 """
 
 SPARQL_LANDMARKS = """
@@ -75,18 +86,20 @@ SELECT DISTINCT
   ?l_h_lat ?l_h_lon
   ?l_t_lat ?l_t_lon
 WHERE {
-  {
-    { ?h wdt:P31 wd:Q41176 . }   UNION
-    { ?h wdt:P31 wd:Q839954 . }  UNION
-    { ?h wdt:P31 wd:Q33506 . }   UNION
-    { ?h wdt:P31 wd:Q44613 . }   UNION
-    { ?h wdt:P31 wd:Q16748862 . }
-  }
+  # Mọi lớp con (trực tiếp hoặc gián tiếp qua P279*) của "di tích lịch sử" (Q1081138),
+  # thay vì liệt kê QID cứng — bao phủ building/archaeological site/museum/... tự động.
+  ?h wdt:P31/wdt:P279* wd:Q1081138 .
   BIND("locatedIn" AS ?r)
   ?h wdt:P17 wd:Q881 .
   ?h wdt:P131 ?t .
-  ?h rdfs:label ?h_label . FILTER(LANG(?h_label) = "vi")
-  ?t rdfs:label ?t_label . FILTER(LANG(?t_label) = "vi")
+  OPTIONAL { ?h rdfs:label ?h_label_vi . FILTER(LANG(?h_label_vi) = "vi") }
+  OPTIONAL { ?h rdfs:label ?h_label_en . FILTER(LANG(?h_label_en) = "en") }
+  BIND(COALESCE(?h_label_vi, ?h_label_en) AS ?h_label)
+  FILTER(BOUND(?h_label))
+  OPTIONAL { ?t rdfs:label ?t_label_vi . FILTER(LANG(?t_label_vi) = "vi") }
+  OPTIONAL { ?t rdfs:label ?t_label_en . FILTER(LANG(?t_label_en) = "en") }
+  BIND(COALESCE(?t_label_vi, ?t_label_en) AS ?t_label)
+  FILTER(BOUND(?t_label))
   OPTIONAL { ?h wdt:P571 ?inception . BIND(YEAR(?inception) AS ?tau_start) }
   OPTIONAL {
     ?h p:P625/psv:P625 ?hn .
@@ -97,7 +110,6 @@ WHERE {
     ?tn wikibase:geoLatitude ?l_t_lat ; wikibase:geoLongitude ?l_t_lon .
   }
 }
-LIMIT 500
 """
 
 SPARQL_HISTORICAL_EVENTS = """
@@ -118,8 +130,13 @@ WHERE {
   BIND("occurredAt" AS ?r)
   ?h wdt:P17 wd:Q881 .
   ?h wdt:P276 ?t .
-  ?h rdfs:label ?h_label . FILTER(LANG(?h_label) = "vi")
-  OPTIONAL { ?t rdfs:label ?t_label . FILTER(LANG(?t_label) = "vi") }
+  OPTIONAL { ?h rdfs:label ?h_label_vi . FILTER(LANG(?h_label_vi) = "vi") }
+  OPTIONAL { ?h rdfs:label ?h_label_en . FILTER(LANG(?h_label_en) = "en") }
+  BIND(COALESCE(?h_label_vi, ?h_label_en) AS ?h_label)
+  FILTER(BOUND(?h_label))
+  OPTIONAL { ?t rdfs:label ?t_label_vi . FILTER(LANG(?t_label_vi) = "vi") }
+  OPTIONAL { ?t rdfs:label ?t_label_en . FILTER(LANG(?t_label_en) = "en") }
+  BIND(COALESCE(?t_label_vi, ?t_label_en) AS ?t_label)
   OPTIONAL { ?h wdt:P585 ?d1 . BIND(YEAR(?d1) AS ?ts1) }
   OPTIONAL { ?h wdt:P580 ?d2 . BIND(YEAR(?d2) AS ?ts2) }
   BIND(COALESCE(?ts1, ?ts2) AS ?tau_start)
@@ -132,7 +149,6 @@ WHERE {
     ?tn wikibase:geoLatitude ?l_t_lat ; wikibase:geoLongitude ?l_t_lon .
   }
 }
-LIMIT 500
 """
 
 # Tên cột chuẩn cho tất cả file CSV
@@ -146,7 +162,7 @@ class WikidataCollector:
     """Thu thập dữ liệu từ Wikidata cho knowledge graph tiếng Việt."""
 
     def __init__(self):
-        self.sparql = SPARQLWrapper(WIKIDATA_SPARQL_ENDPOINT)
+        self.sparql = SPARQLWrapper(WIKIDATA_SPARQL_ENDPOINT, agent="ViSTKG-QA-research/1.0 (minhhaivatc@gmail.com)")
         self.sparql.setReturnFormat(JSON)
 
     def query(self, sparql_query: str) -> list[dict]:

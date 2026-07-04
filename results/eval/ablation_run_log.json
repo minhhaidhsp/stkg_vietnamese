@@ -1,0 +1,116 @@
+[
+  {
+    "scenario": "5_alpha_1_pure_semantic",
+    "priority": 1,
+    "cmd": [
+      "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python314\\python.exe",
+      "-m",
+      "src.train.train",
+      "--seeds",
+      "42",
+      "--set",
+      "retrieval.alpha=1.0"
+    ],
+    "status": "DRY_RUN_NOT_EXECUTED"
+  },
+  {
+    "scenario": "6_no_image_channel",
+    "priority": 1,
+    "cmd": [
+      "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python314\\python.exe",
+      "-m",
+      "src.train.train",
+      "--seeds",
+      "42",
+      "--set",
+      "ablation.disable_image=true"
+    ],
+    "status": "DRY_RUN_NOT_EXECUTED"
+  },
+  {
+    "scenario": "1_full_model_baseline",
+    "priority": 2,
+    "cmd": [
+      "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python314\\python.exe",
+      "-m",
+      "src.train.train",
+      "--seeds",
+      "42"
+    ],
+    "status": "DRY_RUN_NOT_EXECUTED"
+  },
+  {
+    "scenario": "2_no_inward_attention",
+    "priority": 2,
+    "cmd": [
+      "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python314\\python.exe",
+      "-m",
+      "src.train.train",
+      "--seeds",
+      "42",
+      "--set",
+      "ablation.disable_inward_attention=true"
+    ],
+    "status": "DRY_RUN_NOT_EXECUTED"
+  },
+  {
+    "scenario": "3_no_spatial",
+    "priority": 2,
+    "cmd": [
+      "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python314\\python.exe",
+      "-m",
+      "src.train.train",
+      "--seeds",
+      "42",
+      "--set",
+      "ablation.disable_spatial=true"
+    ],
+    "status": "DRY_RUN_NOT_EXECUTED"
+  },
+  {
+    "scenario": "4_no_temporal",
+    "priority": 2,
+    "cmd": [
+      "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python314\\python.exe",
+      "-m",
+      "src.train.train",
+      "--seeds",
+      "42",
+      "--set",
+      "ablation.disable_temporal=true"
+    ],
+    "status": "DRY_RUN_NOT_EXECUTED"
+  },
+  {
+    "scenario": "7_no_visual_reliability",
+    "priority": 2,
+    "cmd": [
+      "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python314\\python.exe",
+      "-m",
+      "src.train.train",
+      "--seeds",
+      "42",
+      "--set",
+      "loss.lambda_vg=0.0",
+      "--set",
+      "model.visual_reliability_module.enabled=false"
+    ],
+    "status": "DRY_RUN_NOT_EXECUTED"
+  },
+  {
+    "scenario": "8_qa_only",
+    "priority": 2,
+    "cmd": [
+      "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python314\\python.exe",
+      "-m",
+      "src.train.train",
+      "--seeds",
+      "42",
+      "--set",
+      "loss.lambda_stkg=0.0",
+      "--set",
+      "loss.lambda_vg=0.0"
+    ],
+    "status": "DRY_RUN_NOT_EXECUTED"
+  }
+]

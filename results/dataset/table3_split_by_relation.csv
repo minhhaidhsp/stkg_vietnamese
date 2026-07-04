@@ -1,0 +1,13 @@
+﻿split,relation,n_questions,pct_of_split
+train,bornIn,6182,46.36
+train,diedIn,1322,9.91
+train,occurredAt,792,5.94
+train,locatedIn,5040,37.79
+val,bornIn,772,46.26
+val,diedIn,166,9.95
+val,occurredAt,101,6.05
+val,locatedIn,630,37.75
+test,bornIn,774,46.24
+test,diedIn,164,9.8
+test,occurredAt,100,5.97
+test,locatedIn,636,37.99

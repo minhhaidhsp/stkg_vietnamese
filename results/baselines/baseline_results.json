@@ -1,0 +1,58 @@
+[
+  {
+    "name": "think_on_graph",
+    "group": "2_llm_kg",
+    "output_type": "free_text",
+    "status": "SKIPPED_NOT_IMPLEMENTED",
+    "reason": "Think-on-Graph CHƯA triển khai — cần chốt LLM agent dùng và đọc đúng thuật toán duyệt đồ thị gốc trước khi viết code (xem docstring)."
+  },
+  {
+    "name": "vintern_1b_v2_zeroshot",
+    "group": "3_vlm",
+    "output_type": "free_text",
+    "status": "SKIPPED_SETUP_ERROR",
+    "reason": "KeyError: 'architectures'\nTraceback (most recent call last):\n  File \"D:\\Projects\\STKG\\stkg_vietnamese\\src\\baselines\\run_baselines.py\", line 37, in run_baseline\n    wrapper = cls(cfg)\n  File \"D:\\Projects\\STKG\\stkg_vietnamese\\src\\baselines\\vintern_zeroshot.py\", line 29, in __init__\n    self.model = AutoModel.from_pretrained(name, trust_remote_code=True).eval()\n                 ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python314\\Lib\\site-packages\\transformers\\models\\auto\\auto_factory.py\", line 319, in from_pretrained\n    config, kwargs = AutoConfig.from_pretrained(\n                     ~~~~~~~~~~~~~~~~~~~~~~~~~~^\n        pretrained_model_name_or_path,\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n    ...<4 lines>...\n        **kwargs,\n        ^^^^^^^^^\n    )\n    ^\n  File \"C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python314\\Lib\\site-packages\\transformers\\models\\auto\\configuration_auto.py\", line 1447, in from_pretrained\n    return config_class.from_pretrained(pretrained_model_name_or_path, **kwargs)\n           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python314\\Lib\\site-packages\\transformers\\configuration_utils.py\", line 554, in from_pretrained\n    return cls.from_dict(config_dict, **kwargs)\n           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python314\\Lib\\site-packages\\transformers\\configuration_utils.py\", line 744, in from_dict\n    logger.info(f\"Model config {config}\")\n                               ^^^^^^^^\n  File \"C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python314\\Lib\\site-packages\\transformers\\configuration_utils.py\", line 827, in __repr__\n    return f\"{self.__class__.__name__} {self.to_json_string()}\"\n                                        ~~~~~~~~~~~~~~~~~~~^^\n  File \"C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python314\\Lib\\site-packages\\transformers\\configuration_utils.py\", line 938, in to_json_string\n    config_dict = self.to_diff_dict()\n  File \"C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python314\\Lib\\site-packages\\transformers\\configuration_utils.py\", line 847, in to_diff_dict\n    class_config_dict = self.__class__().to_dict() if not self.has_no_defaults_at_init else {}\n                        ~~~~~~~~~~~~~~^^\n  File \"C:\\Users\\Administrator\\.cache\\huggingface\\modules\\transformers_modules\\_5CD_hyphen_AI\\Vintern_hyphen_1B_hyphen_v2\\c3f01cf5b55816c092fb493babc672b0dc33c8bc\\configuration_internvl_chat.py\", line 49, in __init__\n    if llm_config['architectures'][0] == 'LlamaForCausalLM':\n       ~~~~~~~~~~^^^^^^^^^^^^^^^^^\nKeyError: 'architectures'\n"
+  },
+  {
+    "name": "qwen2.5_vl_7b_zeroshot",
+    "group": "3_vlm",
+    "output_type": "free_text",
+    "status": "SKIPPED_NOT_IMPLEMENTED",
+    "reason": "Qwen2.5-VL-7B cần GPU thật (Colab) để tải/chạy — chưa thử ở máy local. Dùng transformers.Qwen2VLForConditionalGeneration.from_pretrained('Qwen/Qwen2.5-VL-7B-Instruct') khi có GPU."
+  },
+  {
+    "name": "subgtr_retrain",
+    "group": "1_embedding",
+    "output_type": "ranked_entities",
+    "status": "SKIPPED_NOT_IMPLEMENTED",
+    "reason": "SubGTR cần clone repo gốc + viết adapter dữ liệu — chưa xác định URL repo chính xác, chưa làm ở phiên này."
+  },
+  {
+    "name": "embedkgqa",
+    "group": "1_embedding",
+    "output_type": "ranked_entities",
+    "status": "SKIPPED_NOT_IMPLEMENTED",
+    "reason": "embedkgqa: chưa clone repo (CHƯA XÁC ĐỊNH), chưa viết adapter dữ liệu. Nếu clone+setup dependency vượt quá 3 giờ, BỎ và ghi log lý do vào docs/DECISIONS.md thay vì cố hoàn thiện — theo đúng quy tắc B2."
+  },
+  {
+    "name": "cronkgqa",
+    "group": "1_embedding",
+    "output_type": "ranked_entities",
+    "status": "SKIPPED_NOT_IMPLEMENTED",
+    "reason": "cronkgqa: chưa clone repo (CHƯA XÁC ĐỊNH), chưa viết adapter dữ liệu. Nếu clone+setup dependency vượt quá 3 giờ, BỎ và ghi log lý do vào docs/DECISIONS.md thay vì cố hoàn thiện — theo đúng quy tắc B2."
+  },
+  {
+    "name": "tempoqr",
+    "group": "1_embedding",
+    "output_type": "ranked_entities",
+    "status": "SKIPPED_NOT_IMPLEMENTED",
+    "reason": "tempoqr: chưa clone repo (CHƯA XÁC ĐỊNH), chưa viết adapter dữ liệu. Nếu clone+setup dependency vượt quá 3 giờ, BỎ và ghi log lý do vào docs/DECISIONS.md thay vì cố hoàn thiện — theo đúng quy tắc B2."
+  },
+  {
+    "name": "gentkgqa",
+    "group": "2_llm_kg",
+    "output_type": "free_text",
+    "status": "SKIPPED_NOT_IMPLEMENTED",
+    "reason": "gentkgqa: chưa clone repo (CHƯA XÁC ĐỊNH), chưa viết adapter dữ liệu. Nếu clone+setup dependency vượt quá 3 giờ, BỎ và ghi log lý do vào docs/DECISIONS.md thay vì cố hoàn thiện — theo đúng quy tắc B2."
+  }
+]

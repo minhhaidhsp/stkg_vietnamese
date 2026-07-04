@@ -1,0 +1,4 @@
+﻿split,n_facts,n_entities,n_questions,avg_question_len_words
+train,5584,5962,13965,8.85
+val,698,955,1739,8.92
+test,698,970,1746,9.34

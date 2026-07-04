@@ -22,6 +22,7 @@ from config import RAW_DIR, SPATIAL_DIR, VIETNAM_LAT, VIETNAM_LON
 
 from step2_spatial.osm_resolver import OSMResolver
 from step2_spatial.geonames_resolver import GeoNamesResolver
+from step2_spatial.province_centroids import resolve_province
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
 logger = logging.getLogger(__name__)
@@ -79,7 +80,9 @@ class SpatialEnricher:
         if place_name in self._cache:
             return self._cache[place_name]
 
-        coords = self.osm.resolve(place_name)
+        coords = resolve_province(place_name)
+        if not coords:
+            coords = self.osm.resolve(place_name)
         if not coords and self.geonames.available:
             coords = self.geonames.resolve(place_name)
 

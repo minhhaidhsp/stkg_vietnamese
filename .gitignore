@@ -24,6 +24,19 @@ data/visual/images/
 # Data - file binary numpy
 data/visual/vit_features.npz
 
+# Data - ảnh/zip ViVQA (data/vivqa/images/val2014.zip nặng ~6.6GB, vượt xa
+# giới hạn GitHub — KHÔNG commit ảnh nhị phân, chỉ commit CSV/JSON dẫn xuất)
+data/vivqa/images/
+
+# Checkpoint mô hình (lưu Google Drive khi chạy Colab, không commit vào git)
+results/training/checkpoints*/
+*.pt
+*.pth
+
+# Cache geocode/URL lớn có thể phình theo thời gian chạy — không bắt buộc
+# nhưng để riêng khỏi lịch sử git cho gọn (dữ liệu tái sinh được từ script)
+.venv_*/
+
 # HuggingFace cache
 .cache/
 
@@ -33,3 +46,6 @@ data/visual/vit_features.npz
 # OS
 .DS_Store
 Thumbs.db
+
+# Trạng thái local của Claude Code (không phải asset của dự án)
+.claude/

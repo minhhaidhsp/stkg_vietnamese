@@ -29,6 +29,10 @@ VIT_MODEL   = "google/vit-base-patch16-224"
 CLIP_MODEL  = "openai/clip-vit-base-patch32"
 IMAGE_WIDTH = 400               # px khi tải ảnh từ Wikimedia
 
+# Cấu hình bước 3 - Kế thừa
+INHERITED_DIR = os.path.join(DATA_DIR, "inherited")  # ICEWS download vào đây
+STEP3_DIR     = os.path.join(DATA_DIR, "step3")       # Output bước 3
+
 # Cấu hình bước 2 - Spatial
 SPATIAL_DIR = os.path.join(DATA_DIR, "spatial")
 GEONAMES_USERNAME = ""          # Đăng ký miễn phí tại geonames.org

@@ -1,0 +1,208 @@
+# =============================================================================
+# ViSTKG-QA — config.yaml duy nhất chứa toàn bộ siêu tham số của mô hình,
+# dữ liệu, huấn luyện và đánh giá. Mọi script trong src/ đọc từ file này
+# (xem src/config.py) — không hard-code siêu tham số rải rác trong code.
+# =============================================================================
+
+project:
+  name: ViSTKG-QA
+  description: >
+    Hỏi đáp đa phương thức trên đồ thị tri thức không gian thời gian tiếng Việt.
+  figure_style_ref: assets/figures/hinh1_kien_truc_vistkgqa.svg
+
+# -----------------------------------------------------------------------------
+# Dữ liệu — đường dẫn + THỐNG KÊ THẬT đã đo (không phải số mục tiêu ban đầu
+# của bản thảo). Xem lịch sử audit trong conversation: quy mô đã được hạ từ
+# mục tiêu ban đầu (10.000 câu hỏi / 15.420 thực thể) xuống đúng số liệu thu
+# thập được thật từ Wikidata + Wikipedia.
+# -----------------------------------------------------------------------------
+data:
+  raw_dir: data/raw
+  spatial_dir: data/spatial
+  vivqa_dir: data/vivqa
+  combined_raw_csv: data/raw/combined_raw.csv
+  enriched_csv: data/spatial/enriched.csv   # output Bước 2 (spatial enrichment), input cho Bước 2 ViSTQAD
+
+  stats:
+    # Đo thật ngày 2026-07-03 trên data/spatial/enriched.csv sau khi bổ sung
+    # Wikidata (P31/P279*) + Wikipedia Timeline + Wikipedia Heritage collector.
+    total_facts: 6980
+    total_entities: 7218
+    relation_distribution:
+      bornIn: 4163
+      locatedIn: 1682
+      diedIn: 848
+      occurredAt: 287
+    coordinate_coverage:
+      l_h_lat_pct: 71.7
+      l_t_lat_pct: 95.7
+      note: >
+        locatedIn có l_h (tọa độ cấp di tích cụ thể) phủ ~0% THEO THIẾT KẾ,
+        KHÔNG PHẢI LỖI GEOCODE: locatedIn chỉ được geocode tới cấp tỉnh/thành
+        (l_t, đạt 100% qua bảng tĩnh step2_spatial/province_centroids.py, vì
+        OSM Nominatim bị chặn 403 trong môi trường phát triển và GeoNames
+        chưa cấu hình username). Toạ độ cấp huyện/xã của di tích được lưu ở
+        cột vi_context (địa bàn) trong data/raw/heritage_sites.csv, chưa
+        geocode — có thể bổ sung sau nếu cần độ phân giải cao hơn cấp tỉnh.
+        Khi review coverage thấp, đây là giới hạn có chủ đích, không phải
+        dữ liệu bị thiếu ngoài kế hoạch.
+    temporal_coverage:
+      tau_notna_pct: 94.6
+      tau_range_used: [800, 2025]
+      outliers_clipped: 49   # facts ngoài [800,2025] (mốc tiền sử/huyền sử), loại khỏi huấn luyện STKG
+
+  split:
+    train: 0.8
+    val: 0.1
+    test: 0.1
+    seed: 42
+
+  relations: [bornIn, diedIn, occurredAt, locatedIn]   # từ vựng quan hệ RE, khớp data/spatial/enriched.csv
+
+# -----------------------------------------------------------------------------
+# Lưới nhúng không gian thời gian (STE/RE)
+# -----------------------------------------------------------------------------
+spatiotemporal_grid:
+  n_x: 64
+  n_y: 64
+  n_t: 100
+  embedding_dim: 512
+  spatial_bbox:              # bbox Việt Nam; toạ độ ngoài bbox (kiều bào, ~4.7% facts) được clip vào ô biên gần nhất
+    lat_min: 8.0
+    lat_max: 23.5
+    lon_min: 102.0
+    lon_max: 110.0
+  temporal_range:             # khớp TAU_MIN/TAU_MAX thật đo được, không dùng 2024 như notes.txt cũ
+    tau_min: 800
+    tau_max: 2025
+  score_function: l2_norm     # s(f) = ||STE(h) + RE(r) - STE(t)||
+
+# -----------------------------------------------------------------------------
+# Backbone (đóng băng hoàn toàn) + phần huấn luyện
+# -----------------------------------------------------------------------------
+model:
+  backbone:
+    name: 5CD-AI/Vintern-1B-v2
+    vision_encoder: InternViT-300M
+    language_model: Qwen2-0.5B-Instruct
+    frozen: true
+    # Xác nhận THẬT từ config.json trên HuggingFace (không giả định trùng d=512):
+    # https://huggingface.co/5CD-AI/Vintern-1B-v2/resolve/main/config.json -> llm_config
+    llm_hidden_size: 896
+    llm_num_attention_heads: 14
+    llm_num_key_value_heads: 2
+    llm_head_dim: 64          # 896 / 14
+    llm_num_hidden_layers: 24
+  lora:
+    r: 16
+    alpha: 32
+    target_modules: [q_proj, v_proj]   # lớp attention của LLM
+  projections:
+    # X = [E_Q W_q ; E_I W_v] được cộng dư (residual add) trực tiếp vào luồng
+    # ẩn còn lại của LLM (X ⊕ R_final ở Hình 1) => W_q, W_v PHẢI chiếu vào
+    # đúng llm_hidden_size (896), không phải d=512 của lưới STE/RE.
+    w_q_dim: 896
+    w_v_dim: 896
+  query_projection:
+    # CT (7): q_m^Z = W_z · z_m, chiếu embedding STKG (chiều d=512 của lưới
+    # STE/RE, xem spatiotemporal_grid.embedding_dim) sang không gian ẩn của
+    # LLM (896) trước khi cross-attention với K,V lấy từ X. Đây là phép
+    # chiếu MỚI, không có sẵn trong backbone, cần huấn luyện — không giả
+    # định 512 trùng khớp 896.
+    in_dim: 512    # = spatiotemporal_grid.embedding_dim
+    out_dim: 896   # = model.backbone.llm_hidden_size
+  retrieval_query_projection:
+    # CT (6): x̄ (896, gộp trung bình X — đã ở không gian LLM vì X qua W_q/W_v)
+    # và g(f) (512, không gian STE/RE) không cùng chiều để tính cos(x̄,g(f)).
+    # Phép chiếu MỚI, TÁCH RIÊNG với query_projection (CT7) — vai trò khác
+    # nhau (đây chiếu x̄ VỀ không gian STKG trung tâm 512, không phải chiếu
+    # embedding đồ thị lên không gian LLM). Phát hiện + chốt hướng cùng anh
+    # trước khi viết code, xem docs/DECISIONS.md.
+    in_dim: 896    # = model.backbone.llm_hidden_size
+    out_dim: 512   # = spatiotemporal_grid.embedding_dim
+  ranking_projection:
+    # CT (8): u (896, từ luồng ẩn cuối LLM) và STE(e) (512) cùng lỗi lệch
+    # chiều như CT(6) — xử lý NHẤT QUÁN cùng hướng (chiếu u xuống 512, không
+    # chiếu STE(e) lên 896, vì rẻ hơn — 1 vector/câu hỏi thay vì chiếu lại
+    # toàn bộ tập thực thể E). TÁCH RIÊNG với retrieval_query_projection dù
+    # cùng in/out dim — không dùng chung 1 lớp cho 2 vai trò khác nhau.
+    in_dim: 896
+    out_dim: 512
+  visual_reliability_module:
+    enabled: true
+    input: scene_graph_triplets   # (s, r, o) từ step3_visual/scene_graph_generator.py
+    # Thay thế reliability_scorer.py cũ (công thức tuyến tính cố định,
+    # weights 0.35/0.30/0.20/0.15) bằng module HỌC ĐƯỢC: mỗi thành phần
+    # (s, r, o) của bộ ba trực quan được biểu diễn bằng vector đặc trưng
+    # chiều feature_dim, nối lại rồi qua MLP (hidden_dim) -> sigmoid ra
+    # điểm tin cậy trong [0,1], tối ưu qua L_VG (CT 9), không dùng công
+    # thức trọng số cố định như bản cũ.
+    feature_dim: 512     # = spatiotemporal_grid.embedding_dim, dùng chung không gian đặc trưng
+    hidden_dim: 256
+
+# -----------------------------------------------------------------------------
+# Retrieval hướng ra + Fusion hướng vào
+# -----------------------------------------------------------------------------
+retrieval:
+  alpha: 0.5                       # rel(f) = alpha*cos(x_bar, g(f)) - (1-alpha)*s_hat(f)
+  alpha_grid_search: [0.1, 0.3, 0.5, 0.7, 0.9]   # dùng trên tập val trước khi chốt alpha
+  top_k: 32
+  hard_threshold: null              # KHÔNG dùng ngưỡng cứng — chỉ top-K
+
+fusion:
+  type: scaled_dot_product_cross_attention
+  reuse_backbone_kv: true           # tái sử dụng K,V có sẵn của backbone, không thêm tham số mới
+
+# -----------------------------------------------------------------------------
+# Đầu ra: entity ranking (KHÔNG sinh văn bản tự do)
+# -----------------------------------------------------------------------------
+output_head:
+  type: entity_ranking
+  score_function: softmax(u^T STE(e))
+
+# -----------------------------------------------------------------------------
+# Loss đa nhiệm
+# -----------------------------------------------------------------------------
+loss:
+  lambda_qa: 1.0      # cross-entropy ranking
+  lambda_stkg: 0.5    # margin/softmax loss trên s(f), negative sampling = thay thế thực thể ngẫu nhiên
+  lambda_vg: 0.3       # loss module tin cậy scene graph
+  stkg_margin: 1.0     # margin ranking loss: max(0, margin + s(pos) - s(neg))
+  stkg_num_negatives: 1  # số negative sample (thay thế thực thể ngẫu nhiên) mỗi fact dương
+
+# -----------------------------------------------------------------------------
+# Optimizer + vòng lặp huấn luyện
+# -----------------------------------------------------------------------------
+optimizer:
+  name: AdamW
+  lr_adapter: 2.0e-4     # LoRA + lớp chiếu
+  lr_embedding: 1.0e-3    # bảng nhúng đồ thị (STE/RE)
+  weight_decay: 0.01
+  batch_size: 32
+  max_epochs: 20
+
+early_stopping:
+  metric: val_mrr
+  patience: 3
+
+# -----------------------------------------------------------------------------
+# Cờ ablation (Mục 5 manuscript_methodology.md, kịch bản 2-4/6) — mặc định
+# tắt (mô hình đầy đủ). Khai báo bool tường minh ở đây để --set
+# ablation.xxx=true/false của src/config.py suy luận đúng kiểu bool (không
+# lưu nhầm thành chuỗi "true"/"false" khi key chưa tồn tại trước đó).
+# Kịch bản 5 (alpha=1) và 8 (chỉ L_QA) dùng trực tiếp retrieval.alpha/loss.lambda_*,
+# không cần cờ riêng.
+ablation:
+  disable_inward_attention: false   # kịch bản 2: bỏ CT(7), R_final=0
+  disable_spatial: false             # kịch bản 3: ép lat/lon hằng số
+  disable_temporal: false            # kịch bản 4: ép tau hằng số
+  disable_image: false                # kịch bản 6: luôn dùng null_image_embedding
+
+train:
+  seeds: [42, 43, 44]   # multi-seed
+  checkpoint_dir: checkpoints/   # Google Drive khi chạy trên Colab (mount qua notebooks/)
+  device: cpu            # ghi đè thành cuda khi chạy trên Colab
+
+mock_data:
+  # Dùng cho unit test / debug trên VS Code local, CPU, không cần GPU
+  n_samples: 50

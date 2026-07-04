@@ -1,0 +1,226 @@
+[
+  {
+    "qid": "q000027",
+    "question": "Đa Minh Maria Hồ Ngọc Cẩn sinh ra ở đâu?",
+    "answer": "Việt Nam",
+    "answer_entity_id": "Q881",
+    "template_id": "bornIn_t1",
+    "relation": "bornIn",
+    "fact_6tuple": {
+      "h": "Q1237486",
+      "h_label": "Đa Minh Maria Hồ Ngọc Cẩn",
+      "r": "bornIn",
+      "t": "Q881",
+      "t_label": "Việt Nam",
+      "tau_start": 1876.0,
+      "tau_end": null,
+      "l_h": [
+        16.0,
+        108.0
+      ],
+      "l_t": [
+        16.0,
+        108.0
+      ]
+    },
+    "image_url": "https://commons.wikimedia.org/wiki/Special:FilePath/Bishop_H%E1%BB%93_Ng%E1%BB%8Dc_C%E1%BA%A9n%2C_1935.jpg?width=400",
+    "is_interval_sample": false,
+    "is_reverse_template_sample": false
+  },
+  {
+    "qid": "q008333",
+    "question": "Trần Trọng Kim mất ở đâu?",
+    "answer": "Đà Lạt",
+    "answer_entity_id": "Q25281",
+    "template_id": "diedIn_t1",
+    "relation": "diedIn",
+    "fact_6tuple": {
+      "h": "Q665382",
+      "h_label": "Trần Trọng Kim",
+      "r": "diedIn",
+      "t": "Q25281",
+      "t_label": "Đà Lạt",
+      "tau_start": 1953.0,
+      "tau_end": null,
+      "l_h": [
+        11.94,
+        108.4375
+      ],
+      "l_t": [
+        11.94,
+        108.4375
+      ]
+    },
+    "image_url": "https://commons.wikimedia.org/wiki/Special:FilePath/Portrait_of_L%E1%BB%87_Th%E1%BA%A7n_Tr%E1%BA%A7n_Tr%E1%BB%8Dng_Kim_%28cropped%29.jpg?width=400",
+    "is_interval_sample": false,
+    "is_reverse_template_sample": false
+  },
+  {
+    "qid": "q015944",
+    "question": "Địa bàn hành chính của Đào Trí là gì?",
+    "answer": "Đăk Lăk",
+    "answer_entity_id": "Đăk Lăk",
+    "template_id": "locatedIn_t3",
+    "relation": "locatedIn",
+    "fact_6tuple": {
+      "h": "Đào Trí",
+      "h_label": "Đào Trí",
+      "r": "locatedIn",
+      "t": "Đăk Lăk",
+      "t_label": "Đăk Lăk",
+      "tau_start": 2015.0,
+      "tau_end": 2015.0,
+      "l_h": [
+        null,
+        null
+      ],
+      "l_t": [
+        12.6667,
+        108.05
+      ]
+    },
+    "image_url": null,
+    "is_interval_sample": false,
+    "is_reverse_template_sample": false
+  },
+  {
+    "qid": "q010455",
+    "question": "Vào năm -179, sự kiện nào đã xảy ra tại Việt Nam?",
+    "answer": "Triệu Đà",
+    "answer_entity_id": "Triệu Đà",
+    "template_id": "occurredAt_t4_reverse",
+    "relation": "occurredAt",
+    "fact_6tuple": {
+      "h": "Triệu Đà",
+      "h_label": "Triệu Đà",
+      "r": "occurredAt",
+      "t": "Việt Nam",
+      "t_label": "Việt Nam",
+      "tau_start": -179.0,
+      "tau_end": -179.0,
+      "l_h": [
+        null,
+        null
+      ],
+      "l_t": [
+        null,
+        null
+      ]
+    },
+    "image_url": null,
+    "is_interval_sample": false,
+    "is_reverse_template_sample": true
+  },
+  {
+    "qid": "q010797",
+    "question": "Địa điểm gắn liền với sự kiện Chiến tranh Pháp-Đại Nam là gì?",
+    "answer": "Việt Nam",
+    "answer_entity_id": "Việt Nam",
+    "template_id": "occurredAt_t3",
+    "relation": "occurredAt",
+    "fact_6tuple": {
+      "h": "Chiến tranh Pháp-Đại Nam",
+      "h_label": "Chiến tranh Pháp-Đại Nam",
+      "r": "occurredAt",
+      "t": "Việt Nam",
+      "t_label": "Việt Nam",
+      "tau_start": 1858.0,
+      "tau_end": 1884.0,
+      "l_h": [
+        null,
+        null
+      ],
+      "l_t": [
+        null,
+        null
+      ]
+    },
+    "image_url": null,
+    "is_interval_sample": true,
+    "is_reverse_template_sample": false
+  },
+  {
+    "qid": "q000077",
+    "question": "Giuse Vũ Văn Thiên sinh ra ở đâu?",
+    "answer": "Hải Dương",
+    "answer_entity_id": "Q36729",
+    "template_id": "bornIn_t1",
+    "relation": "bornIn",
+    "fact_6tuple": {
+      "h": "Q1295622",
+      "h_label": "Giuse Vũ Văn Thiên",
+      "r": "bornIn",
+      "t": "Q36729",
+      "t_label": "Hải Dương",
+      "tau_start": 1960.0,
+      "tau_end": null,
+      "l_h": [
+        20.916666666667,
+        106.33333333333
+      ],
+      "l_t": [
+        20.916666666667,
+        106.33333333333
+      ]
+    },
+    "image_url": "https://commons.wikimedia.org/wiki/Special:FilePath/TGM_V%C5%A9_V%C4%83n_Thi%C3%AAn_2019.jpg?width=400",
+    "is_interval_sample": false,
+    "is_reverse_template_sample": false
+  },
+  {
+    "qid": "q000374",
+    "question": "Nơi sinh của Phan Khôi là gì?",
+    "answer": "Điện Bàn",
+    "answer_entity_id": "Q725063",
+    "template_id": "bornIn_t2",
+    "relation": "bornIn",
+    "fact_6tuple": {
+      "h": "Q75404",
+      "h_label": "Phan Khôi",
+      "r": "bornIn",
+      "t": "Q725063",
+      "t_label": "Điện Bàn",
+      "tau_start": 1887.0,
+      "tau_end": null,
+      "l_h": [
+        15.888472222222,
+        108.25456666667
+      ],
+      "l_t": [
+        15.888472222222,
+        108.25456666667
+      ]
+    },
+    "image_url": "https://commons.wikimedia.org/wiki/Special:FilePath/Portrait_of_Phan_Kh%C3%B4i_%28cropped%29.jpg?width=400",
+    "is_interval_sample": false,
+    "is_reverse_template_sample": false
+  },
+  {
+    "qid": "q000221",
+    "question": "Chu Huy Mân sinh ra ở đâu?",
+    "answer": "Vinh",
+    "answer_entity_id": "Q33428",
+    "template_id": "bornIn_t1",
+    "relation": "bornIn",
+    "fact_6tuple": {
+      "h": "Q649858",
+      "h_label": "Chu Huy Mân",
+      "r": "bornIn",
+      "t": "Q33428",
+      "t_label": "Vinh",
+      "tau_start": 1913.0,
+      "tau_end": null,
+      "l_h": [
+        18.673333333333,
+        105.69222222222
+      ],
+      "l_t": [
+        18.673333333333,
+        105.69222222222
+      ]
+    },
+    "image_url": "https://upload.wikimedia.org/wikipedia/commons/c/c0/Chu_Huy_M%C3%A2n.png",
+    "is_interval_sample": false,
+    "is_reverse_template_sample": false
+  }
+]

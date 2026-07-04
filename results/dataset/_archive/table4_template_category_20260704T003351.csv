@@ -1,0 +1,14 @@
+﻿template_id,relation,mask,question_type_ct,spatiotemporal_category
+bornIn_t1,bornIn,t,location_query,thuan_khong_gian
+bornIn_t2,bornIn,t,location_query,thuan_khong_gian
+diedIn_t1,diedIn,t,location_query,thuan_khong_gian
+diedIn_t2,diedIn,t,location_query,thuan_khong_gian
+occurredAt_t1,occurredAt,t,location_query,thuan_khong_gian
+occurredAt_t2,occurredAt,t,location_query,thuan_khong_gian
+occurredAt_t3,occurredAt,t,location_query,thuan_khong_gian
+occurredAt_t4_reverse,occurredAt,h,entity_query,ket_hop
+locatedIn_t1,locatedIn,t,location_query,thuan_khong_gian
+locatedIn_t2,locatedIn,t,location_query,thuan_khong_gian
+locatedIn_t3,locatedIn,t,location_query,thuan_khong_gian
+locatedIn_t4,locatedIn,t,location_query,ket_hop
+(không có),-,-,-,thuan_thoi_gian

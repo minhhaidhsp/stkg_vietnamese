@@ -1,0 +1,100 @@
+{
+  "generated_at": "2026-07-03T21:00:55.698739",
+  "overview": [
+    {
+      "split": "train",
+      "n_facts": 5584,
+      "n_entities": 5962,
+      "n_questions": 13965,
+      "avg_question_len_words": 8.85
+    },
+    {
+      "split": "val",
+      "n_facts": 698,
+      "n_entities": 955,
+      "n_questions": 1739,
+      "avg_question_len_words": 8.92
+    },
+    {
+      "split": "test",
+      "n_facts": 698,
+      "n_entities": 970,
+      "n_questions": 1746,
+      "avg_question_len_words": 9.34
+    }
+  ],
+  "by_relation": [
+    {
+      "split": "train",
+      "relation": "bornIn",
+      "n_questions": 6660,
+      "pct_of_split": 47.69
+    },
+    {
+      "split": "train",
+      "relation": "diedIn",
+      "n_questions": 1356,
+      "pct_of_split": 9.71
+    },
+    {
+      "split": "train",
+      "relation": "occurredAt",
+      "n_questions": 866,
+      "pct_of_split": 6.2
+    },
+    {
+      "split": "train",
+      "relation": "locatedIn",
+      "n_questions": 5083,
+      "pct_of_split": 36.4
+    },
+    {
+      "split": "val",
+      "relation": "bornIn",
+      "n_questions": 832,
+      "pct_of_split": 47.84
+    },
+    {
+      "split": "val",
+      "relation": "diedIn",
+      "n_questions": 170,
+      "pct_of_split": 9.78
+    },
+    {
+      "split": "val",
+      "relation": "occurredAt",
+      "n_questions": 108,
+      "pct_of_split": 6.21
+    },
+    {
+      "split": "val",
+      "relation": "locatedIn",
+      "n_questions": 629,
+      "pct_of_split": 36.17
+    },
+    {
+      "split": "test",
+      "relation": "bornIn",
+      "n_questions": 834,
+      "pct_of_split": 47.77
+    },
+    {
+      "split": "test",
+      "relation": "diedIn",
+      "n_questions": 170,
+      "pct_of_split": 9.74
+    },
+    {
+      "split": "test",
+      "relation": "occurredAt",
+      "n_questions": 103,
+      "pct_of_split": 5.9
+    },
+    {
+      "split": "test",
+      "relation": "locatedIn",
+      "n_questions": 639,
+      "pct_of_split": 36.6
+    }
+  ]
+}

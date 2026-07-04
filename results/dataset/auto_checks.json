@@ -1,0 +1,23 @@
+{
+  "generated_at": "2026-07-04T00:34:53.378412",
+  "full_questions_17450": {
+    "n_total": 16679,
+    "n_flagged": 457,
+    "pct_flagged": 2.74,
+    "reason_counts": {
+      "answer_leakage": 268,
+      "tau_ngoai_800_2025": 177,
+      "hoi_nam_nhung_thieu_tau": 15
+    }
+  },
+  "validation_sample_500": {
+    "n_total": 500,
+    "n_flagged": 13,
+    "pct_flagged": 2.6,
+    "reason_counts": {
+      "answer_leakage": 10,
+      "tau_ngoai_800_2025": 2,
+      "hoi_nam_nhung_thieu_tau": 1
+    }
+  }
+}

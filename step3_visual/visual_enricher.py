@@ -60,6 +60,7 @@ class VisualEnricher:
         output_csv: str = OUTPUT_CSV,
         extract_vit: bool = True,
         gen_scene_graph: bool = True,
+        sample_size: int | None = None,
     ) -> pd.DataFrame:
         """
         Chạy toàn bộ pipeline.
@@ -86,25 +87,32 @@ class VisualEnricher:
             .rename(columns={"h": "qid", "h_label": "label"})
             .to_dict("records")
         )
-        image_map = self.collector.collect_batch(unique_entities)
-        logger.info(f"  {len(image_map)}/{len(unique_entities)} entities co anh")
+        if sample_size:
+            unique_entities = unique_entities[:sample_size]
+            logger.info(f"  Sample mode: chi lay {sample_size} entities")
+        image_map = self.collector.collect_batch(unique_entities, skip_download=True)
+        logger.info(f"  {len(image_map)}/{len(unique_entities)} entities co URL anh")
+
+        # Lọc ra những entity có file thực để dùng cho ViT/CLIP
+        image_files = {q: p for q, p in image_map.items() if p and os.path.exists(p)}
 
         # ── 3. ViT features ──────────────────────────────────────────
         vit_features: dict = {}
-        if extract_vit and image_map:
+        if extract_vit and image_files:
             logger.info("Step 3.2: Trich xuat ViT features...")
-            # Tải cache nếu có
             vit_features = ViTExtractor.load()
-            missing_vit  = {q: p for q, p in image_map.items() if q not in vit_features}
+            missing_vit  = {q: p for q, p in image_files.items() if q not in vit_features}
             if missing_vit:
                 new_feats = self._get_vit().extract_batch(missing_vit)
                 vit_features.update(new_feats)
                 ViTExtractor.save(vit_features)
             logger.info(f"  {len(vit_features)} ViT feature vectors")
+        else:
+            logger.info("Step 3.2: Bo qua ViT (chua co file anh)")
 
         # ── 4. CLIP score (image-label similarity) ────────────────────
         clip_map: dict[str, float] = {}
-        if gen_scene_graph and image_map:
+        if gen_scene_graph and image_files:
             logger.info("Step 3.3: Tinh CLIP score va sinh scene graphs...")
             # Tải cache triplets nếu có
             triplets_all = SceneGraphGenerator.load()
@@ -121,7 +129,7 @@ class VisualEnricher:
                     "relation":   rel_map.get(qid, "locatedIn"),
                     "image_path": path,
                 }
-                for qid, path in image_map.items()
+                for qid, path in image_files.items()
                 if qid not in triplets_all
             ]
 
@@ -132,7 +140,7 @@ class VisualEnricher:
 
             # Tính CLIP score (image ↔ entity label)
             from tqdm import tqdm
-            for qid, path in tqdm(image_map.items(), desc="CLIP score", unit="img"):
+            for qid, path in tqdm(image_files.items(), desc="CLIP score", unit="img"):
                 label = label_map.get(qid, "")
                 if label:
                     clip_map[qid] = sgg.clip_text_similarity(path, label)
@@ -164,7 +172,7 @@ if __name__ == "__main__":
     import sys; sys.stdout.reconfigure(encoding="utf-8")
 
     enricher = VisualEnricher()
-    df = enricher.run()
+    df = enricher.run(sample_size=50)
 
     print("\n--- Ket qua Buoc 3 ---")
     print(f"Total facts: {len(df)}")

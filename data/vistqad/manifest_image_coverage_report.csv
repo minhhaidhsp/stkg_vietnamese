@@ -1,0 +1,4 @@
+﻿split,n_total,n_with_image,pct_with_image
+train,13336,58,0.43
+val,1669,10,0.6
+test,1674,8,0.48

@@ -1,0 +1,5 @@
+﻿relation,n_questions,bleu_vs_template_mean,rougeL_vs_template_mean
+bornIn,8326,42.323,0.631
+diedIn,1696,48.412,0.593
+locatedIn,6351,48.769,0.729
+occurredAt,1077,56.765,0.77
